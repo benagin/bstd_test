@@ -1,0 +1,5 @@
+tracker
+dependencies/
+*.swp
+*.d
+*.o
