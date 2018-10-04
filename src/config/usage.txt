@@ -1,9 +1,24 @@
-Usage:
+C++ JSON parser.
 
-./jsonparse [-t] [-id]
+This tool will read and parse files that follow the JSON format. It will store
+the JSON objects, arrays, and values into equivalent C++ data structures and
+allowing you to access via a C++ API.
+
+Note, this tool is not meant to be a CLI tool, but a library. However, a CLI is
+supported, mostly for testing.
+
+CLI usage:
+
+./jsonparse [-t] [-d] <path-to-json-file>
+
+  help, --help
+    Show usage.
 
   -t, --test
     Run tests.
 
   -d, --debug
     Print debug information.
+
+  -v, --verbose
+    Same as -d.

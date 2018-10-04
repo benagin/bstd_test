@@ -35,7 +35,7 @@ class cli {
     bool m_test{false};
 
     // Default path to config file. This file contains the usage string.
-    const std::string DEFAULT_CONFIG_PATH = "../config/usage.txt";
+    const std::string DEFAULT_CONFIG_PATH = "config/usage.txt";
 };
 
 #endif

@@ -11,6 +11,12 @@ void cli::handle_arguments(int _argc, char** _argv) {
 
       m_debug = arg == "-d" or arg == "--debug";
       m_test = arg == "-t" or arg == "--test";
+
+      // If we see the help command show usage and stop.
+      if(arg == "help" or arg == "--help") {
+        print_usage();
+        return;
+      }
     }
 
     if(m_debug) {
