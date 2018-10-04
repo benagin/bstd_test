@@ -1,9 +1,6 @@
 #ifndef JSON_PARSER_HPP_
 #define JSON_PARSER_HPP_
 
-#include <assert.h>
-#include <iostream>
-#include <fstream>
 #include <string>
 
 class json_parser {
@@ -18,8 +15,6 @@ class json_parser {
 
     // Parse the .json file at _path.
     void parse(const std::string _path) {}
-
-    void test();
 
   protected:
 

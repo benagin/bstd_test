@@ -33,7 +33,7 @@ OBJS := $(SRCS:.cpp=.o)
 jsonparse: $(OBJS)
 	@echo Linking $@...
 	@$(CXX) $(CXXFLAGS) $(OBJS) -o $@
-	@rm -f *.o
+	@rm -f $(OBJS)
 
 # Object File Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 

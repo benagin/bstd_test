@@ -1,0 +1,9 @@
+Usage:
+
+./jsonparse [-t] [-id]
+
+  -t, --test
+    Run tests.
+
+  -d, --debug
+    Print debug information.
