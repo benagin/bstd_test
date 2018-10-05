@@ -9,8 +9,8 @@ void cli::handle_arguments(int _argc, char** _argv) {
 
       std::string arg(_argv[i]);
 
-      m_debug = arg == "-d" or arg == "--debug";
-      m_test = arg == "-t" or arg == "--test";
+      m_debug = m_debug or (arg == "-d" or arg == "--debug");
+      m_test = m_test or (arg == "-t" or arg == "--test");
 
       // If we see the help command show usage and stop.
       if(arg == "help" or arg == "--help") {
@@ -27,6 +27,7 @@ void cli::handle_arguments(int _argc, char** _argv) {
     if(m_test) {
       const auto& ut = new unit_test(m_debug);
       ut->test();
+      delete ut;
     }
 }
 
