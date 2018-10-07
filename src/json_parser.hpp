@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 
+#include "./error/error.hpp"
 #include "./json_structures/json.hpp"
 
 class json_parser {
@@ -23,6 +24,7 @@ class json_parser {
     json* get_json() const { return m_json; }
 
     // Parse the .json file at _path.
+    // Return a C++ repensentation of a json object.
     json* parse() ;
 
   protected:

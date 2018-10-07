@@ -1,6 +1,8 @@
 #include "cli.hpp"
 
-void cli::handle_arguments(int _argc, char** _argv) {
+void
+cli::
+handle_arguments(int _argc, char** _argv) {
     std::vector<std::string> arguments;
     std::string path = "";
 
@@ -22,11 +24,11 @@ void cli::handle_arguments(int _argc, char** _argv) {
         print_usage();
         return;
       }
-      else if(!arg.empty()){
+      else if(arg.front() != '-' and !arg.empty()){
         path = arg;
       }
       else
-        std::cerr << "Unknown CLI argument: " << arg << std::endl;
+        throw error("Unknown CLI argument: " + arg, "cli::handle_arguments");
     }
 
     // We have a json file to parse.
@@ -43,7 +45,9 @@ void cli::handle_arguments(int _argc, char** _argv) {
     }
 }
 
-void cli::run_parser(const std::string& _arg) const {
+void
+cli::
+run_parser(const std::string& _arg) const {
   const auto parser = new json_parser(_arg, m_debug);
   const auto json = parser->parse();
 
@@ -58,8 +62,8 @@ void cli::print_usage() const {
   const std::ifstream ifs(DEFAULT_CONFIG_PATH);
 
   if(!ifs.is_open()) {
-    std::cerr << "Couldn't open usage config file at " << DEFAULT_CONFIG_PATH
-      << std::endl << "Does the file exist?" << std::endl;
+    throw error("Couldn't open usage config file at " + DEFAULT_CONFIG_PATH +
+        ". Does the file exist?", "cli::print_usage");
 
     return;
   }

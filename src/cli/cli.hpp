@@ -31,14 +31,15 @@ class cli {
 
   private:
 
+    // Default path to config file. This file contains the usage string.
+    const std::string DEFAULT_CONFIG_PATH{"config/usage.txt"};
+
     // Should we print debug information?
     bool m_debug{false};
 
     // Should we run tests?
     bool m_test{false};
 
-    // Default path to config file. This file contains the usage string.
-    const std::string DEFAULT_CONFIG_PATH = "config/usage.txt";
 };
 
 #endif
