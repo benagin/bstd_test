@@ -23,6 +23,9 @@ class cli {
     // Handle the valid arguments.
     void handle_arguments(int _argc, char** _argv);
 
+    // Run the parser with a path to a json file.
+    void run_parser(const std::string& _argc) const;
+
     // Print the usage statement to help the user know how to run this program.
     void print_usage() const;
 
