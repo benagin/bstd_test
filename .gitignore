@@ -1,4 +1,4 @@
-json
+bin/*
 dependencies/
 *.swp
 *.d
