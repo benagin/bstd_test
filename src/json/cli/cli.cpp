@@ -21,7 +21,7 @@ handle_arguments(int _argc, char** _argv) {
       }
       else if(arg == "help" or arg == "--help") {
         // If we see the help command show usage and stop.
-        print_usage();
+        print_help();
         return;
       }
       else if(arg.front() != '-' and !arg.empty()){
@@ -39,30 +39,47 @@ handle_arguments(int _argc, char** _argv) {
       if(m_debug)
         std::cout << "Running tests..." << std::endl;
 
-      const auto& ut = new unit_test(m_debug);
-      ut->test();
-      delete ut;
+      // TODO: Start unit tests.
     }
 }
 
 void
 cli::
-run_parser(const std::string& _arg) const {
-  const auto parser = new json_parser(_arg, m_debug);
-  const auto json = parser->parse();
+run_parser(const std::string& _path) const {
+  const auto j = new json(_path, m_debug);
 
   if(m_debug)
-    std::cout << "Parsed json: " << std::endl << *json << std::endl;
+    std::cout << "Parsed json: " << std::endl << *j << std::endl;
 
-  delete parser;
-  delete json;
+  delete j;
 }
 
-void cli::print_usage() const {
-  const std::ifstream ifs(DEFAULT_CONFIG_PATH);
+void
+cli::
+print_help() const {
+  const std::ifstream ifs(DEFAULT_HELP_PATH);
 
   if(!ifs.is_open()) {
-    throw error("Couldn't open usage config file at " + DEFAULT_CONFIG_PATH +
+    throw error("Couldn't open help file at " + DEFAULT_HELP_PATH +
+        ". Does the file exist?", "cli::print_help");
+
+    return;
+  }
+
+  std::stringstream stream;
+  stream << ifs.rdbuf();
+  std::cout << stream.str() << std::endl;
+
+  print_usage();
+}
+
+void
+cli::
+print_usage() const {
+  const std::ifstream ifs(DEFAULT_USAGE_PATH);
+
+  if(!ifs.is_open()) {
+    throw error("Couldn't open usage file at " + DEFAULT_USAGE_PATH +
         ". Does the file exist?", "cli::print_usage");
 
     return;

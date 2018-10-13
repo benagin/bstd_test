@@ -1,5 +1,6 @@
-jsonparse
+json
 dependencies/
 *.swp
 *.d
 *.o
+*.so

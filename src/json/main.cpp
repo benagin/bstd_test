@@ -1,5 +1,6 @@
 #include "cli/cli.hpp"
-#include "error/json_parse_error.hpp"
+#include "error/error.hpp"
+#include "error/context_error.hpp"
 
 int main(int argc, char **argv) {
   auto* c = new cli();
@@ -8,8 +9,8 @@ int main(int argc, char **argv) {
     try {
       c->handle_arguments(argc, argv);
     }
-    catch(json_parse_error _jpe) {
-      std::cerr << "JSON parse error: " << _jpe.what() << std::endl;
+    catch(context_error _ce) {
+      std::cerr << "JSON parse error: " << _ce.what() << std::endl;
     }
     catch(error _e) {
       std::cerr << "Error: " << _e.what() << std::endl;

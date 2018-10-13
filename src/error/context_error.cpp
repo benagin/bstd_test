@@ -1,24 +1,23 @@
-#include "json_parse_error.hpp"
+#include "context_error.hpp"
 
 const std::string
-json_parse_error::
-mark_bad_char(const SIT& _sit, const std::string& _expression) const {
-  if(_expression.empty())
-    throw error("Empty expression string",
-        "json_parse_error::mark_bad_char");
+context_error::
+mark_char(const SIT& _sit, const std::string& _context) const {
+  if(_context.empty())
+    throw context_error("Empty context string", "context_error::mark_char");
 
-  return mark_bad_string(_sit, _sit, _expression);
+  return mark_string(_sit, _sit, _context);
 }
 
 
 const std::string
-json_parse_error::
-mark_bad_string(const SIT& _start, const SIT& _end,
-    const std::string& _expression) const {
-  auto error = trim(_expression);
+context_error::
+mark_string(const SIT& _start, const SIT& _last, const std::string& _context)
+    const {
+  auto error = trim(_context);
 
   auto start = error.begin() + std::distance(error.cbegin(), _start),
-       end = error.begin() + std::distance(error.cbegin(), _end);
+       end = error.begin() + std::distance(error.cbegin(), _last);
 
   error.insert(start, {' ', '{'});
   error.insert(end + 3, {'}', ' '});
@@ -27,7 +26,7 @@ mark_bad_string(const SIT& _start, const SIT& _end,
 }
 
 std::string
-json_parse_error::
+context_error::
 trim(const std::string& _context) const {
   // If the context of an error is larger than this we wil trim it to keep
   // output cleaner.
