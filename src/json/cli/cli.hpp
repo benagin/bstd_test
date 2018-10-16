@@ -10,6 +10,8 @@
 
 #include "../parser/parser.hpp"
 
+namespace bstd {
+
 // Handles the command line interface (CLI) of the json parser.
 class cli {
 
@@ -32,8 +34,8 @@ class cli {
   private:
 
     // Default path to documentation files.
-    const std::string DEFAULT_USAGE_PATH{"../../doc/json/usage.txt"};
-    const std::string DEFAULT_HELP_PATH{"../../doc/json/help.txt"};
+    const std::string DEFAULT_USAGE_PATH{"doc/json/usage.txt"};
+    const std::string DEFAULT_HELP_PATH{"doc/json/help.txt"};
 
     // Should we print debug information?
     bool m_debug{false};
@@ -42,5 +44,6 @@ class cli {
     bool m_test{false};
 
 };
+}
 
 #endif

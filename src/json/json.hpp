@@ -6,7 +6,9 @@
 #include <string>
 
 #include "parser/parser.hpp"
-#include "../error/error.hpp"
+#include "error/error.hpp"
+
+namespace bstd {
 
 // A C++ representation of a JSON object. A JSON object essentially consists of
 // objects, arrays, key, value pairs, and other values. These can be easily
@@ -38,7 +40,9 @@ class json {
 
   protected:
 
-    friend std::ostream& operator<<(std::ostream&, const json&);
+    friend std::ostream& operator<<(std::ostream& _os, const json& _json) {
+      return _os << _json.get_string();
+    }
 
     bool m_debug{false};
 
@@ -47,5 +51,6 @@ class json {
     std::string m_string{""};
 
 };
+}
 
 #endif

@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <string>
 
+namespace bstd {
+
 // Helps us throw effective errors.
 class error : public std::runtime_error {
 
@@ -14,5 +16,5 @@ class error : public std::runtime_error {
           + _what + ".\n") {}
 
 };
-
+}
 #endif

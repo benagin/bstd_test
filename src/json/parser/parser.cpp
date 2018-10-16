@@ -2,7 +2,7 @@
 
 
 void
-parser::
+bstd::parser::
 parse(const std::string& _string) {
   if(m_debug)
     std::cout << "parser::parse" << std::endl;

@@ -5,9 +5,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <error/error.hpp>
 
-#include "../../error/error.hpp"
 #include "../json.hpp"
+
+namespace bstd {
 
 class parser {
 
@@ -27,5 +29,6 @@ class parser {
     bool m_debug{false};
 
 };
+}
 
 #endif

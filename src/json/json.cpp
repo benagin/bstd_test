@@ -1,13 +1,6 @@
 #include "json.hpp"
 
-
-std::ostream&
-operator<<(std::ostream& _os, const json& _json) {
-  return _os << _json.get_string();
-}
-
-
-json::
+bstd::json::
 json(const std::string& _string, const bool _debug) : m_debug(_debug) {
   if(m_debug)
     std::cout << "json::json" << std::endl;
@@ -24,7 +17,7 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
     m_path = _string;
     std::ifstream ifs(m_path);
     if(!ifs.is_open())
-      throw error("Couldn't open json file at path: " + m_path +
+      throw bstd::error("Couldn't open json file at path: " + m_path +
           ". Does it exist?", "json_parser::json_parser");
 
     // Read and store the file if it's valid.
@@ -41,7 +34,7 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
 
 
 void
-json::
+bstd::json::
 parse() {
   if(m_debug)
     std::cout << "json::parse" << std::endl;
@@ -53,7 +46,7 @@ parse() {
 
 
 void
-json::
+bstd::json::
 write() const {
   if(m_debug)
     std::cout << "json::write" << std::endl;
@@ -67,7 +60,7 @@ write() const {
   std::ofstream ofs(m_path, std::ofstream::trunc);
 
   if(!ofs.is_open())
-    throw error("Couldn't open json file for writing: " + m_path +
+    throw bstd::error("Couldn't open json file for writing: " + m_path +
         ". Does it exist?", "json::write");
 
   ofs << m_string;

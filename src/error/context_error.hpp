@@ -5,6 +5,8 @@
 
 #include "./error.hpp"
 
+namespace bstd {
+
 // Error helper for errors within a string.
 // Here, context is a string that contains an error.
 // This is useful for things like parsing where you want to indicate the cause
@@ -64,6 +66,6 @@ class context_error : public error {
     std::string trim(const std::string& _context) const;
 
 };
-
+}
 
 #endif
