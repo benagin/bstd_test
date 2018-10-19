@@ -28,7 +28,7 @@ DEPENDENCY_DIR := ./build/dependencies
 DEPENDENCIES   := $(DEPENDENCY_DIR)/dependencies
 D_FILES        := $(DEPENDENCY_DIR)/$*.d
 
-INC_DIRS := -Isrc/
+INC_DIRS := -Iinclude/error
 
 # Compiler Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 

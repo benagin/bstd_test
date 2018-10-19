@@ -1,8 +1,7 @@
 #include <stdexcept>
+#include <bstd_error.hpp>
 
 #include "cli/cli.hpp"
-#include "error/error.hpp"
-#include "error/context_error.hpp"
 
 int main(int argc, char **argv) {
   auto* c = new bstd::cli();

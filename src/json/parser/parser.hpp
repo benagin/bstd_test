@@ -5,7 +5,6 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <error/error.hpp>
 
 #include "../json.hpp"
 

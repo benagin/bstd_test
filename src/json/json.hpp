@@ -4,9 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <bstd_error.hpp>
 
 #include "parser/parser.hpp"
-#include "error/error.hpp"
 
 namespace bstd {
 
