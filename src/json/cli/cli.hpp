@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "../parser/parser.hpp"
+#include "parser/parser.hpp"
 
 namespace bstd {
 

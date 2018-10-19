@@ -28,7 +28,8 @@ DEPENDENCY_DIR := ./build/dependencies
 DEPENDENCIES   := $(DEPENDENCY_DIR)/dependencies
 D_FILES        := $(DEPENDENCY_DIR)/$*.d
 
-INC_DIRS := -Iinclude/error
+INC_DIRS := -Iinclude/error -Iinclude/json -Iinclude/test \
+  -I$(JSON_SRC) -I$(ERROR_SERC) -I$(TEST_SRC)
 
 # Compiler Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 

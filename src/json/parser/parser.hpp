@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-#include "../json.hpp"
+#include "json.hpp"
 
 namespace bstd {
 
