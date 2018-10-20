@@ -18,12 +18,14 @@ ERROR := error
 
 # Directory Layout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+$(shell mkdir -p bin)
 BIN_DIR := ./bin
 
 JSON_SRC  ?= ./src/json
 ERROR_SRC ?= ./src/error
 TEST_SRC  ?= ./src/test
 
+$(shell mkdir -p build/dependencies)
 DEPENDENCY_DIR := ./build/dependencies
 DEPENDENCIES   := $(DEPENDENCY_DIR)/dependencies
 D_FILES        := $(DEPENDENCY_DIR)/$*.d
