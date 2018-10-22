@@ -75,8 +75,6 @@ class json {
     virtual void write() const { write(m_path); }
     virtual void write(const std::string& _path = "") const;
 
-  protected:
-
     // Operator overrides.
 
     friend bool operator==(const json& _lhs, const json& _rhs) {
@@ -105,6 +103,8 @@ class json {
     friend std::ostream& operator<<(std::ostream& _os, const json& _json) {
       return _os << _json.to_string();
     }
+
+  protected:
 
     bool m_debug{false};
 
