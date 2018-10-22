@@ -1,12 +1,9 @@
 #ifndef PARSER_HPP_
 #define PARSER_HPP_
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-
 #include "json.hpp"
+
+using namespace bstd;
 
 namespace bstd {
 
@@ -21,7 +18,7 @@ class parser {
     ~parser();
 
     // Parse a JSON string.
-    void parse(const std::string& _string) ;
+    void parse(const std::string& _string);
 
   protected:
 
