@@ -5,7 +5,9 @@
 
 #include "./error.hpp"
 
-namespace bstd {
+using namespace bstd::error;
+
+namespace bstd::error {
 
 // Error helper for errors within a string.
 // Here, context is a string that contains an error.

@@ -1,7 +1,7 @@
 #include "context_error.hpp"
 
 const std::string
-bstd::context_error::
+context_error::
 mark_char(const SIT& _sit, const std::string& _context) const {
   if(_context.empty())
     throw context_error("Empty context string", "context_error::mark_char");
@@ -11,7 +11,7 @@ mark_char(const SIT& _sit, const std::string& _context) const {
 
 
 const std::string
-bstd::context_error::
+context_error::
 mark_string(const SIT& _start, const SIT& _last, const std::string& _context)
     const {
   auto error = trim(_context);
@@ -26,7 +26,7 @@ mark_string(const SIT& _start, const SIT& _last, const std::string& _context)
 }
 
 std::string
-bstd::context_error::
+context_error::
 trim(const std::string& _context) const {
   // If the context of an error is larger than this we wil trim it to keep
   // output cleaner.

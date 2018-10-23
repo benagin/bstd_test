@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace bstd {
+namespace bstd::error {
 
 // Helps us throw effective errors.
 class error : public std::runtime_error {
@@ -17,4 +17,5 @@ class error : public std::runtime_error {
 
 };
 }
+
 #endif
