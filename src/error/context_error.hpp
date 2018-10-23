@@ -5,8 +5,6 @@
 
 #include "./error.hpp"
 
-using namespace bstd::error;
-
 namespace bstd::error {
 
 // Error helper for errors within a string.

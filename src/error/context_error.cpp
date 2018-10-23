@@ -1,5 +1,7 @@
 #include "context_error.hpp"
 
+using namespace bstd::error;
+
 const std::string
 context_error::
 mark_char(const SIT& _sit, const std::string& _context) const {
