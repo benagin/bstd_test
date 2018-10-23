@@ -1,7 +1,7 @@
 #include "cli.hpp"
 
 void
-bstd::cli::
+bstd::json::cli::
 handle_arguments(int _argc, char** _argv) {
     // TODO: Use json parser to load supported arguments at runtime.
     std::vector<std::string> arguments;
@@ -33,8 +33,8 @@ handle_arguments(int _argc, char** _argv) {
         path = arg;
       }
       else
-        throw bstd::error("Unknown CLI argument: " + arg,
-            "cli::handle_arguments");
+        throw bstd::error::error("Unknown CLI argument: " + arg,
+            "bstd::json::cli::handle_arguments");
     }
 
     // We have a json file to parse.
@@ -50,7 +50,7 @@ handle_arguments(int _argc, char** _argv) {
 }
 
 void
-bstd::cli::
+bstd::json::cli::
 run_parser(const std::string& _path) const {
   const auto j = new json(_path, m_debug);
 
@@ -61,13 +61,13 @@ run_parser(const std::string& _path) const {
 }
 
 void
-bstd::cli::
+bstd::json::cli::
 print_help() const {
   const std::ifstream ifs(DEFAULT_HELP_PATH);
 
   if(!ifs.is_open()) {
-    throw bstd::error("Couldn't open help file at " + DEFAULT_HELP_PATH +
-        ". Does the file exist?", "cli::print_help");
+    throw bstd::error::error("Couldn't open help file at " + DEFAULT_HELP_PATH +
+        ". Does the file exist?", "bstd::json::cli::print_help");
 
     return;
   }
@@ -80,13 +80,13 @@ print_help() const {
 }
 
 void
-bstd::cli::
+bstd::json::cli::
 print_usage() const {
   const std::ifstream ifs(DEFAULT_USAGE_PATH);
 
   if(!ifs.is_open()) {
-    throw bstd::error("Couldn't open usage file at " + DEFAULT_USAGE_PATH +
-        ". Does the file exist?", "cli::print_usage");
+    throw bstd::error::error("Couldn't open usage file at " + DEFAULT_USAGE_PATH +
+        ". Does the file exist?", "bstd::json::cli::print_usage");
 
     return;
   }

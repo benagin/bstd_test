@@ -1,5 +1,7 @@
 #include "json.hpp"
 
+using namespace bstd::json;
+
 json::
 json(const std::string& _string, const bool _debug) : m_debug(_debug) {
   if(m_debug)
@@ -18,7 +20,7 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
     // TODO: implement file size check.
     std::ifstream ifs(m_path);
     if(!ifs.is_open())
-      throw bstd::error("Couldn't open json file at path: " + m_path +
+      throw bstd::error::error("Couldn't open json file at path: " + m_path +
           ". Does it exist?", "bstd::json");
 
     // Read and store the file if it's valid.
@@ -34,7 +36,7 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
   if(m_string.size() > MAX_STRING_SIZE) {
     std::stringstream ss;
     ss << MAX_STRING_SIZE;
-    throw bstd::error("btsd::json",
+    throw bstd::error::error("btsd::json",
         "The JSON object is too large. The current maximum string size is "
         + ss.str());
   }
@@ -44,48 +46,49 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
 
 
 const size_t
-json::
+bstd::json::json::
 size() const {
   return m_children.size();
 }
 
 
 const std::string&
-json::
+bstd::json::json::
 get_path() const {
   return m_path;
 }
 
 
 const std::string&
-json::get_string() const {
+bstd::json::json::
+get_string() const {
   return m_string;
 }
 
 
 const std::string&
-json::
+bstd::json::json::
 to_string() const {
   return m_string;
 }
 
 
 json&
-json::
+bstd::json::json::
 operator[](const size_t index) {
   return m_children[index];
 }
 
 
 const json&
-json::
+bstd::json::json::
 operator[](const size_t _index) const {
   return m_children[_index];
 }
 
 
 json&
-json::
+bstd::json::json::
 operator[](const json& _key) {
   const auto& vit = std::find(m_children.begin(), m_children.end(), _key);
 
@@ -95,7 +98,7 @@ operator[](const json& _key) {
 
 
 const json&
-json::
+bstd::json::json::
 operator[](const json& _key) const {
   const auto& cvit = std::find(m_children.cbegin(), m_children.cend(), _key);
 
@@ -105,21 +108,21 @@ operator[](const json& _key) const {
 
 
 json&
-json::
+bstd::json::json::
 at(const size_t _index) {
   return m_children.at(_index);
 }
 
 
 const json&
-json::
+bstd::json::json::
 at(const size_t _index) const {
   return m_children.at(_index);
 }
 
 
 json&
-json::
+bstd::json::json::
 at(const json& _key) {
   const auto& vit = std::find(m_children.begin(), m_children.end(), _key);
 
@@ -131,7 +134,7 @@ at(const json& _key) {
 
 
 const json&
-json::
+bstd::json::json::
 at(const json& _key) const {
   const auto cvit = std::find(m_children.cbegin(), m_children.cend(), _key);
 
@@ -143,7 +146,7 @@ at(const json& _key) const {
 
 
 const bool
-json::
+bstd::json::json::
 operator==(const json& _rhs) const {
   return this->get_path() == _rhs.get_path()
     or this->get_string() == _rhs.to_string();
@@ -152,14 +155,15 @@ operator==(const json& _rhs) const {
 
 // TODO: add max size check.
 const std::string
-json::operator+(const char* _rhs) const {
+bstd::json::json::
+operator+(const char* _rhs) const {
   return *this + std::string(_rhs);
 }
 
 
 // TODO: add max size check.
 const std::string
-json::
+bstd::json::json::
 operator+(const std::string& _rhs) const {
   return this->to_string() + _rhs;
 }
@@ -167,7 +171,7 @@ operator+(const std::string& _rhs) const {
 
 // TODO: add max size check.
 const json
-json::
+bstd::json::json::
 operator+(const json& _rhs) {
   json result(*this);
   result.add_child(_rhs);
@@ -177,12 +181,13 @@ operator+(const json& _rhs) {
 
 
 void
-json::
+bstd::json::json::
 parse() {
   if(m_debug)
     std::cout << "bstd::json::parse" << std::endl;
 
   // TODO: Use the results of the parser.
+  // TODO: Think about how we want this to work.
   const auto p = new parser(m_debug);
   p->parse(m_string);
 }
@@ -190,21 +195,21 @@ parse() {
 
 // TODO: add max size check.
 void
-json::
+bstd::json::json::
 add_child(const json& _child) {
   m_children.push_back(_child);
 }
 
 
 void
-json::
+bstd::json::json::
 write() const {
   write(m_path);
 }
 
 
 void
-json::
+bstd::json::json::
 write(const std::string& _path) const {
   if(m_debug)
     std::cout << "bstd::json::write" << std::endl;
@@ -219,7 +224,7 @@ write(const std::string& _path) const {
   std::ofstream ofs(_path, std::ofstream::trunc);
 
   if(!ofs.is_open())
-    throw bstd::error("Couldn't open json file for writing: " + _path +
+    throw bstd::error::error("Couldn't open json file for writing: " + _path +
         ". Does it exist?", "json::write");
 
   ofs << m_string;
@@ -227,7 +232,7 @@ write(const std::string& _path) const {
 
 
 void
-json::
+bstd::json::json::
 set_string(const std::string& _string) {
   m_string = _string;
 }

@@ -11,9 +11,7 @@
 
 #include "parser/parser.hpp"
 
-using namespace bstd;
-
-namespace bstd {
+namespace bstd::json {
 
 // A C++ representation of a JSON object. A JSON object consists of objects,
 // arrays, key, value pairs, and other values. jsonhese can be easily stored as C++
@@ -47,7 +45,7 @@ class json {
     // The JSON object supports many types of access.
     // The [] operator is supported with either a positive integer index or a
     // JSON object which acts like a key.
-    // The at function is identical to the [] operator, but throws an
+    // The at(...) function is identical to the [] operator, but throws an
     // error if the index exceeds the container size (std::out_of_range) or if
     // the key is not found (bstd::error).
 

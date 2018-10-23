@@ -10,7 +10,7 @@
 
 #include "parser/parser.hpp"
 
-namespace bstd {
+namespace bstd::json {
 
 // Handles the command line interface (CLI) of the json parser.
 class cli {

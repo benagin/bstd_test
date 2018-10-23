@@ -3,9 +3,7 @@
 
 #include "json.hpp"
 
-using namespace bstd;
-
-namespace bstd {
+namespace bstd::json {
 
 class parser {
 
