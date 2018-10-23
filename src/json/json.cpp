@@ -43,6 +43,47 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
 }
 
 
+const size_t
+json::
+size() const {
+  return m_children.size();
+}
+
+
+const std::string&
+json::
+get_path() const {
+  return m_path;
+}
+
+
+const std::string&
+json::get_string() const {
+  return m_string;
+}
+
+
+const std::string&
+json::
+to_string() const {
+  return m_string;
+}
+
+
+json&
+json::
+operator[](const size_t index) {
+  return m_children[index];
+}
+
+
+const json&
+json::
+operator[](const size_t _index) const {
+  return m_children[_index];
+}
+
+
 json&
 json::
 operator[](const json& _key) {
@@ -60,6 +101,20 @@ operator[](const json& _key) const {
 
   // TODO: test what happens when *cvit is end.
   return *cvit;
+}
+
+
+json&
+json::
+at(const size_t _index) {
+  return m_children.at(_index);
+}
+
+
+const json&
+json::
+at(const size_t _index) const {
+  return m_children.at(_index);
 }
 
 
@@ -87,6 +142,40 @@ at(const json& _key) const {
 }
 
 
+const bool
+json::
+operator==(const json& _rhs) const {
+  return this->get_path() == _rhs.get_path()
+    or this->get_string() == _rhs.to_string();
+}
+
+
+// TODO: add max size check.
+const std::string
+json::operator+(const char* _rhs) const {
+  return *this + std::string(_rhs);
+}
+
+
+// TODO: add max size check.
+const std::string
+json::
+operator+(const std::string& _rhs) const {
+  return this->to_string() + _rhs;
+}
+
+
+// TODO: add max size check.
+const json
+json::
+operator+(const json& _rhs) {
+  json result(*this);
+  result.add_child(_rhs);
+  result.set_string(result.get_string() + _rhs.get_string());
+  return result;
+}
+
+
 void
 json::
 parse() {
@@ -96,6 +185,21 @@ parse() {
   // TODO: Use the results of the parser.
   const auto p = new parser(m_debug);
   p->parse(m_string);
+}
+
+
+// TODO: add max size check.
+void
+json::
+add_child(const json& _child) {
+  m_children.push_back(_child);
+}
+
+
+void
+json::
+write() const {
+  write(m_path);
 }
 
 
@@ -119,4 +223,11 @@ write(const std::string& _path) const {
         ". Does it exist?", "json::write");
 
   ofs << m_string;
+}
+
+
+void
+json::
+set_string(const std::string& _string) {
+  m_string = _string;
 }
