@@ -30,8 +30,13 @@ DEPENDENCY_DIR := ./build/dependencies
 DEPENDENCIES   := $(DEPENDENCY_DIR)/dependencies
 D_FILES        := $(DEPENDENCY_DIR)/$*.d
 
-INC_DIRS := -Iinclude/error -Iinclude/json -Iinclude/test \
-  -I$(JSON_SRC) -I$(ERROR_SERC) -I$(TEST_SRC)
+JSON_INC ?= -Iinclude/json
+ERROR_INC ?= -Iinclude/error
+TEST_INC ?= -Iinclude/test
+PROJ_INC ?= $(JSON_INC) $(ERROR_INC) $(TEST_INC) -I$(JSON_SRC) -I$(ERROR_SRC) \
+	    -I$(TEST_SRC)
+
+INC_DIRS ?= $(PROJ_INC)
 
 # Compiler Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -58,9 +63,13 @@ JSON_OBJS      := $(JSON_SRCS:.cpp=.o)
 JSON_EXEC      := $(BIN_DIR)/json
 JSON_LIB       := $(BIN_DIR)/libbstdjson.so
 
+BOOST_LIB := -lboost_system -lboost_filesystem
+
 SRCS := $(JSON_SRCS) $(ERROR_SRCS)
 OBJS := $(JSON_OBJS) $(ERROR_OBJS)
 LIBS := $(ERROR_LIB) $(JSON_LIB)
+
+LFLAGS := $(BOOST_LIB)
 
 # Object File Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -79,7 +88,7 @@ all:	$(ERROR) $(JSON) $(BSTD)
 
 # Library
 bstd:	$(BSTD_LIB)
-$(BSTD_LIB):	$(LIBS)
+$(BSTD_LIB):    $(LIBS)
 		@echo $(BLUE)Linking $@...$(END)
 		@$(CXX) $(CXXFLAGS) $(LIBS) -o $@
 		@rm -f $(JSON_OBJS)
@@ -96,7 +105,7 @@ $(JSON_EXEC):	$(JSON_LIB) $(JSON_OBJS)
 # Library
 $(JSON_LIB):	$(JSON_OBJS)
 		@echo $(BLUE)Linking $@...$(END)
-		@$(CXX) $(LDFLAGS) -o $@ $^
+		@$(CXX) $(LDFLAGS) $(LFLAGS) -o $@ $^
 
 # bstd::error
 

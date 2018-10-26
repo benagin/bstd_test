@@ -1,7 +1,10 @@
 #include "cli.hpp"
 
+namespace bstd::json {
+
+
 void
-bstd::json::cli::
+cli::
 handle_arguments(int _argc, char** _argv) {
     // TODO: Use json parser to load supported arguments at runtime.
     std::vector<std::string> arguments;
@@ -39,7 +42,7 @@ handle_arguments(int _argc, char** _argv) {
 
     // We have a json file to parse.
     if(!path.empty())
-      run_parser(path);
+      build_json(path);
 
     if(m_test) {
       if(m_debug)
@@ -50,8 +53,8 @@ handle_arguments(int _argc, char** _argv) {
 }
 
 void
-bstd::json::cli::
-run_parser(const std::string& _path) const {
+cli::
+build_json(const std::string& _path) const {
   const auto j = new json(_path, m_debug);
 
   if(m_debug)
@@ -61,7 +64,7 @@ run_parser(const std::string& _path) const {
 }
 
 void
-bstd::json::cli::
+cli::
 print_help() const {
   const std::ifstream ifs(DEFAULT_HELP_PATH);
 
@@ -80,7 +83,7 @@ print_help() const {
 }
 
 void
-bstd::json::cli::
+cli::
 print_usage() const {
   const std::ifstream ifs(DEFAULT_USAGE_PATH);
 
@@ -94,4 +97,7 @@ print_usage() const {
   std::stringstream stream;
   stream << ifs.rdbuf();
   std::cout << stream.str() << std::endl;
+}
+
+
 }

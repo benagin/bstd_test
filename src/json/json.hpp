@@ -3,8 +3,8 @@
 
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include <bstd_error.hpp>
@@ -24,44 +24,22 @@ class json {
 
   public:
 
-    json() {}
+    json(const bool _debug = false) : m_debug(_debug) {}
 
-    // Construct from a .json file or a JSON string.
-    // jsonhis begins the parsing process.
+    // Construct from a JSON string.
+    // This begins the parsing process.
     json(const std::string& _string, const bool _debug = false);
 
     virtual ~json() {}
 
     // Getters.
 
-    const size_t size() const;
+    // Returns the size of the string representation of the JSON object.
+    virtual const size_t size() const;
 
-    const std::string& get_path() const;
+    virtual const std::string& get_path() const final;
 
-    const std::string& get_string() const;
-
-    virtual const std::string& to_string() const;
-
-    // The JSON object supports many types of access.
-    // The [] operator is supported with either a positive integer index or a
-    // JSON object which acts like a key.
-    // The at(...) function is identical to the [] operator, but throws an
-    // error if the index exceeds the container size (std::out_of_range) or if
-    // the key is not found (bstd::error).
-
-    // Accessors.
-
-    json& operator[](const size_t index);
-    const json& operator[](const size_t _index) const;
-
-    json& operator[](const json& _key);
-    const json& operator[](const json& _key) const;
-
-    json& at(const size_t _index);
-    const json& at(const size_t _index) const;
-
-    json& at(const json& _key);
-    const json& at(const json& _key) const;
+    virtual const std::string to_string() const;
 
     // Operator overrides.
 
@@ -75,7 +53,7 @@ class json {
     // object (this). The two JSON strings are concatenated.
     // NOTE: this means you lose the path (and other member variables) of the
     // right hand side object.
-    virtual const json operator+(const json& _rhs);
+    virtual const json operator+(const json& _rhs) const;
 
     friend const std::string operator+(const char* _lhs, const json& _rhs) {
       return std::string(_lhs) + _rhs;
@@ -89,18 +67,15 @@ class json {
       return _os << _json.to_string();
     }
 
-    virtual void parse();
-
-    void add_child(const json& _child);
+    virtual void add_child(const json& _child) final;
 
     // Writes the JSON object to m_path or _path if provided.
-    virtual void write() const;
+    virtual void write() const final;
     virtual void write(const std::string& _path) const;
 
   protected:
 
-    // Not called externally.
-    void set_string(const std::string& _string);
+    void parse(const std::string& _string);
 
     bool m_debug{false};
 
@@ -110,11 +85,17 @@ class json {
 
     std::string m_path{""};
 
-    // TODO: test and possibly move away from this implementation if it
-    // effects performance.
-    std::string m_string{""};
+    // Either the file name (this is json) or the string associated with this
+    // element (classes that derive from json).
+    // From the grammar (https://www.json.org/) this is the string in:
+    // member
+    //  ws string ws ':' element
+    //
+    //  If this is not constructed with a path and/or does not have a unique
+    //  member at the highest level:
+    std::string m_name{""};
 
-    // Each JSON object can store other JSON objects, excluding the literals.
+    // The JSON objects at the highest level in the .json file.
     std::vector<json> m_children;
 
 };

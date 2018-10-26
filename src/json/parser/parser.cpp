@@ -1,11 +1,14 @@
 #include "parser.hpp"
+#include "json.hpp"
+
+namespace bstd::json {
 
 
 void
-bstd::json::parser::
-parse(const std::string& _string) {
-  if(m_debug)
-    std::cout << "bstd::json::parser::parse" << std::endl;
+parser::
+parse(const std::string& _string, const json* _json) const {
 
-  // TODO: Implement the parser.
+}
+
+
 }

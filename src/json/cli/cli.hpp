@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "parser/parser.hpp"
+#include "json.hpp"
 
 namespace bstd::json {
 
@@ -24,8 +24,8 @@ class cli {
     // Handle the valid arguments.
     void handle_arguments(int _argc, char** _argv);
 
-    // Run the parser with a path to a json file.
-    void run_parser(const std::string& _path) const;
+    // Build a json object with a path to a .json file.
+    void build_json(const std::string& _path) const;
 
     void print_help() const;
 
