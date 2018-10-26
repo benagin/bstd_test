@@ -1,6 +1,6 @@
 #include "context_error.hpp"
 
-using namespace bstd::error;
+namespace bstd::error {
 
 const std::string
 context_error::
@@ -57,4 +57,7 @@ trim(const std::string& _context) const {
     error = error.substr(0, size_to_trim).insert(0, ellipsis);
 
   return error;
+}
+
+
 }
