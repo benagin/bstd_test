@@ -14,8 +14,10 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
   auto json_string = _string;
 
   // Check if we have a JSON string or path.
-  if(extension != dot_json) {
+  if(extension == dot_json) {
     // Try to open string as a path.
+
+    // TODO: set filename (m_name).
 
     // TODO: implement file size check.
     std::ifstream ifs(_string);
@@ -59,6 +61,20 @@ get_path() const {
 }
 
 
+const std::string&
+json::
+get_name() const {
+  return m_name;
+}
+
+
+const std::vector<json>&
+json::
+get_children() const {
+  return m_children;
+}
+
+
 const std::string
 json::
 to_string() const {
@@ -69,6 +85,7 @@ to_string() const {
 const bool
 json::
 operator==(const json& _rhs) const {
+  // TODO: implement by comparing children.
   return this->to_string() == _rhs.to_string();
 }
 
@@ -77,6 +94,7 @@ operator==(const json& _rhs) const {
 const std::string
 json::
 operator+(const char* _rhs) const {
+  // TODO: implement by adding children.
   return *this + std::string(_rhs);
 }
 
@@ -85,6 +103,7 @@ operator+(const char* _rhs) const {
 const std::string
 json::
 operator+(const std::string& _rhs) const {
+  // TODO: implement by adding children.
   return this->to_string() + _rhs;
 }
 
@@ -94,7 +113,7 @@ const json
 json::
 operator+(const json& _rhs) const {
   json result(*this);
-  result.add_child(_rhs);
+  result.add_children(_rhs.get_children());
   return result;
 }
 
@@ -108,6 +127,15 @@ parse(const std::string& _string) {
   const auto p = new parser(m_debug);
   p->parse(_string, this);
   delete p;
+}
+
+
+// TODO: add max size check.
+void
+json::
+add_children(const std::vector<json>& _children) {
+  m_children.insert(std::cend(m_children), std::cbegin(_children),
+      std::cend(_children));
 }
 
 
