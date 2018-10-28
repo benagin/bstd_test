@@ -17,8 +17,6 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
   if(extension == dot_json) {
     // Try to open string as a path.
 
-    // TODO: set filename (m_name).
-
     // TODO: implement file size check.
     std::ifstream ifs(_string);
 
@@ -47,10 +45,20 @@ json(const std::string& _string, const bool _debug) : m_debug(_debug) {
 }
 
 
+json&
+json::
+operator=(json _rhs) {
+  std::swap(m_path, _rhs.m_path);
+  std::swap(m_children, _rhs.m_children);
+
+  return *this;
+}
+
+
 const size_t
 json::
 size() const {
-  return m_children.size();
+  return to_string().size();
 }
 
 
@@ -58,13 +66,6 @@ const std::string&
 json::
 get_path() const {
   return m_path;
-}
-
-
-const std::string&
-json::
-get_name() const {
-  return m_name;
 }
 
 
@@ -78,43 +79,42 @@ get_children() const {
 const std::string
 json::
 to_string() const {
+  std::string result = "";
+
+  for(auto& child : m_children)
+    result += child.to_string();
+
   return "json";
 }
 
 
-const bool
+bool
 json::
-operator==(const json& _rhs) const {
+operator==(const json& _rhs) {
   // TODO: implement by comparing children.
   return this->to_string() == _rhs.to_string();
 }
 
 
-// TODO: add max size check.
-const std::string
+json&
 json::
-operator+(const char* _rhs) const {
-  // TODO: implement by adding children.
-  return *this + std::string(_rhs);
+operator+=(const json& _rhs) {
+  this->add_children(_rhs.get_children());
+  return *this;
 }
 
 
 // TODO: add max size check.
-const std::string
-json::
-operator+(const std::string& _rhs) const {
-  // TODO: implement by adding children.
-  return this->to_string() + _rhs;
+json
+operator+(json _lhs, const json& _rhs) {
+  _lhs += _rhs;
+  return _lhs;
 }
 
 
-// TODO: add max size check.
-const json
-json::
-operator+(const json& _rhs) const {
-  json result(*this);
-  result.add_children(_rhs.get_children());
-  return result;
+std::ostream&
+operator<<(std::ostream& _os, const json& _json) {
+  return _os << _json.to_string();
 }
 
 
