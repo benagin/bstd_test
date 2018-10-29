@@ -54,14 +54,14 @@ DEPS = -MMD -MF $(D_FILES)
 
 BSTD_LIB := $(BIN_DIR)/libbstd.so
 
-ERROR_SRCS      := $(shell find $(ERROR_SRC) -path "*.cpp")
-ERROR_OBJS      := $(ERROR_SRCS:.cpp=.o)
-ERROR_LIB	:= $(BIN_DIR)/libbstderror.so
+ERROR_SRCS := $(shell find $(ERROR_SRC) -path "*.cpp")
+ERROR_OBJS := $(ERROR_SRCS:.cpp=.o)
+ERROR_LIB := $(BIN_DIR)/libbstderror.so
 
-JSON_SRCS      := $(shell find $(JSON_SRC) -path "*.cpp")
-JSON_OBJS      := $(JSON_SRCS:.cpp=.o)
-JSON_EXEC      := $(BIN_DIR)/json
-JSON_LIB       := $(BIN_DIR)/libbstdjson.so
+JSON_SRCS := $(shell find $(JSON_SRC) -path "*.cpp")
+JSON_OBJS := $(JSON_SRCS:.cpp=.o)
+JSON_EXEC := $(BIN_DIR)/json
+JSON_LIB  := $(BIN_DIR)/libbstdjson.so
 
 BOOST_LIB := -lboost_system -lboost_filesystem
 

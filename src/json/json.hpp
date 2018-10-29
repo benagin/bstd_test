@@ -15,10 +15,10 @@
 namespace bstd::json {
 
 // A C++ representation of a JSON object. A JSON object consists of objects,
-// arrays, key, value pairs, and other values. jsonhese can be easily stored as C++
-// structures. jsonhis interface allows for accessing and changing the object(s).
-// Changes can then be written back to the JSON file.
-// jsonhis also acts as the highest object in the grammar found here:
+// arrays, key, value pairs, and other values. These can be easily stored as
+// C++ structures. This interface allows for accessing and changing the
+// object(s). Changes can then be written back to the JSON file.
+// This also acts as the highest object in the grammar found here:
 // https://www.json.org/
 // All other JSON objects inherit from this class.
 class json {
