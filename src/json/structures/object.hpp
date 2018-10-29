@@ -34,7 +34,7 @@ class object final : public value {
 
   private:
 
-    std::map<std::string, value> m_values;
+    std::map<std::string, value*> m_values;
 
 };
 

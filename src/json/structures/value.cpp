@@ -3,11 +3,10 @@
 namespace bstd::json {
 
 
-const std::string
+const std::string&
 value::
-to_string() const {
-
-  return "";
+get_name() const {
+  return m_name;
 }
 
 

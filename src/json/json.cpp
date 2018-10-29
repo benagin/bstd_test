@@ -177,14 +177,15 @@ write(const std::string& _path) const {
     return;
   }
 
-  // TODO: check file size before or after writing.
   std::ofstream ofs(_path, std::ofstream::trunc);
 
   if(!ofs.is_open())
     throw bstd::error::error("Couldn't open json file for writing: " + _path +
         ". Does it exist?", "json::write");
 
-  ofs << to_string();
+  for(auto child : m_children)
+    ofs << child;
+  // TODO: check file size before or after writing.
 }
 
 
