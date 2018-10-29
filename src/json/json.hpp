@@ -32,25 +32,27 @@ class json {
     // This begins the parsing process.
     json(const std::string& _string, const bool _debug = false);
 
-    // Required for std::insert(...) used in json::add_children(...).
     json& operator=(json _rhs);
 
     virtual ~json() {}
 
-    // Returns the size of the string representation of the JSON object.
-    virtual const size_t size() const final;
 
     // Getters.
 
-    const std::vector<json>& get_children() const;
+    // Returns the size of m_children.
+    virtual const size_t size() const;
+
+    const std::vector<json*>& get_children() const;
 
     const std::string& get_path() const;
 
-    // Operator oveloads.
+    // Operator overloads.
 
-    bool operator==(const json& _rhs);
+    // True if this contains exactly the same children as _rhs.
+    // TODO: determine if this is what we really want.
+    virtual bool operator==(const json& _rhs);
 
-    virtual json& operator+=(const json& _rhs) final;
+    virtual json& operator+=(const json& _rhs);
 
     friend json operator+(json _lhs, const json& _rhs);
 
@@ -60,15 +62,15 @@ class json {
 
     virtual const std::string to_string() const;
 
-    // Parse a JSON string.
+    // Parse a json string.
     // Called by json::json(string, bool) constructor.
     virtual void parse(const std::string& _string) final;
 
-    virtual void add_child(const json& _child) final;
-    virtual void add_children(const std::vector<json>&
+    virtual void add_child(json* _child) final;
+    virtual void add_children(const std::vector<json*>&
         _children) final;
 
-    // Writes the JSON object to m_path or _path if provided.
+    // Writes the json object to m_path or _path if provided.
     void write() const;
     virtual void write(const std::string& _path) const;
 
@@ -82,8 +84,8 @@ class json {
 
     std::string m_path{""};
 
-    // The JSON objects at the highest level in the .json file.
-    std::vector<json> m_children;
+    // The json objects at the highest level in the .json file.
+    std::vector<json*> m_children;
 
 };
 

@@ -58,7 +58,14 @@ operator=(json _rhs) {
 const size_t
 json::
 size() const {
-  return to_string().size();
+  return m_children.size();
+}
+
+
+const std::vector<json*>&
+json::
+get_children() const {
+  return m_children;
 }
 
 
@@ -69,37 +76,41 @@ get_path() const {
 }
 
 
-const std::vector<json>&
-json::
-get_children() const {
-  return m_children;
-}
-
-
 const std::string
 json::
 to_string() const {
   std::string result = "";
 
-  for(auto& child : m_children)
-    result += child.to_string();
+  for(auto child : m_children)
+    result += child->to_string();
 
-  return "json";
+  return result;
 }
 
 
 bool
 json::
 operator==(const json& _rhs) {
-  // TODO: implement by comparing children.
-  return this->to_string() == _rhs.to_string();
+  if(size() != _rhs.size())
+    return false;
+
+  // Using sorted children vectors we can ensure that each child will be in the
+  // same position as its equivalent in _rhs's children vector. If this fails
+  // then the json objects aren't equal.
+  auto this_children_copy = m_children,
+        rhs_children_copy = _rhs.m_children;
+
+  std::sort(this_children_copy.begin(), this_children_copy.end());
+  std::sort(rhs_children_copy.begin(), rhs_children_copy.end());
+
+  return this_children_copy == rhs_children_copy;
 }
 
 
 json&
 json::
 operator+=(const json& _rhs) {
-  this->add_children(_rhs.get_children());
+  add_children(_rhs.get_children());
   return *this;
 }
 
@@ -133,16 +144,16 @@ parse(const std::string& _string) {
 // TODO: add max size check.
 void
 json::
-add_children(const std::vector<json>& _children) {
-  m_children.insert(std::cend(m_children), std::cbegin(_children),
-      std::cend(_children));
+add_children(const std::vector<json*>& _children) {
+  m_children.insert(m_children.cend(), _children.cbegin(),
+      _children.cend());
 }
 
 
 // TODO: add max size check.
 void
 json::
-add_child(const json& _child) {
+add_child(json* _child) {
   m_children.push_back(_child);
 }
 
