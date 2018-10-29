@@ -36,7 +36,6 @@ class json {
 
     virtual ~json() {}
 
-
     // Getters.
 
     // Returns the size of m_children.
