@@ -1,0 +1,47 @@
+#ifndef JSON_BASE_HPP_
+#define JSON_BASE_HPP_
+
+#include <fstream>
+#include <iostream>
+#include <string>
+
+#include <bstd_error.hpp>
+
+namespace bstd::json {
+
+// Abstract class used as base for each json related structure.
+class json_base {
+
+  public:
+
+    json_base(const bool _debug) :m_debug(_debug) {}
+
+    virtual ~json_base() = 0;
+
+    virtual const std::size_t size() const = 0;
+
+    friend std::ostream& operator<<(std::ostream& _os,
+        const json_base& _json_base);
+
+    virtual const std::string to_string() const = 0;
+
+    virtual void parse(const std::string& _string) = 0;
+
+    virtual void write(const std::string& _path) const = 0;
+
+  protected:
+
+    virtual std::fstream open_json_file(const std::string& _path,
+        std::ios_base::openmode _mode) const final;
+
+    virtual const bool check_extension(const std::string& _path) const final;
+
+    bool m_debug{false};
+
+  private:
+
+};
+
+}
+
+#endif

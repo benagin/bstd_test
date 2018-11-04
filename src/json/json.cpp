@@ -3,26 +3,15 @@
 namespace bstd::json {
 
 json::
-json(const std::string& _string, const bool _debug) : m_debug(_debug) {
-  if(m_debug)
-    std::cout << "bstd::json" << std::endl;
-
-  constexpr std::string_view dot_json{".json"};
-  const auto extension =
-    _string.substr(_string.size() - dot_json.length());
-
+json(const std::string& _string, const bool _debug) : json(_debug) {
   auto json_string = _string;
 
   // Check if we have a JSON string or path.
-  if(extension == dot_json) {
+  if(check_extension(_string)) {
     // Try to open string as a path.
 
     // TODO: implement file size check.
-    std::ifstream ifs(_string);
-
-    if(!ifs.is_open())
-      throw bstd::error::error("bstd::json(string, bool)",
-          "Couldn't open json file at path: " + _string + ". Does it exist?");
+    auto ifs = open_json_file(_string, std::fstream::in);
 
     std::stringstream stream;
     stream << ifs.rdbuf();
@@ -55,14 +44,14 @@ operator=(json _rhs) {
 }
 
 
-const size_t
+const std::size_t
 json::
 size() const {
   return m_children.size();
 }
 
 
-const std::vector<json*>&
+const std::vector<value*>&
 json::
 get_children() const {
   return m_children;
@@ -123,18 +112,9 @@ operator+(json _lhs, const json& _rhs) {
 }
 
 
-std::ostream&
-operator<<(std::ostream& _os, const json& _json) {
-  return _os << _json.to_string();
-}
-
-
 void
 json::
 parse(const std::string& _string) {
-  if(m_debug)
-    std::cout << "bstd::json::parse" << std::endl;
-
   const auto p = new parser(m_debug);
   p->parse(_string, this);
   delete p;
@@ -144,7 +124,7 @@ parse(const std::string& _string) {
 // TODO: add max size check.
 void
 json::
-add_children(const std::vector<json*>& _children) {
+add_children(const std::vector<value*>& _children) {
   m_children.insert(m_children.cend(), _children.cbegin(),
       _children.cend());
 }
@@ -153,7 +133,7 @@ add_children(const std::vector<json*>& _children) {
 // TODO: add max size check.
 void
 json::
-add_child(json* _child) {
+add_child(value* _child) {
   m_children.push_back(_child);
 }
 
@@ -168,23 +148,11 @@ write() const {
 void
 json::
 write(const std::string& _path) const {
-  if(m_debug)
-    std::cout << "bstd::json::write" << std::endl;
+  auto ofs = open_json_file(_path, std::fstream::out | std::fstream::trunc);
 
-  // No need to crash here, we can just do nothing. Log a warning instead.
-  if(_path.empty()) {
-    std::cerr << "Attempting to write json object to empty path." << std::endl;
-    return;
-  }
-
-  std::ofstream ofs(_path, std::ofstream::trunc);
-
-  if(!ofs.is_open())
-    throw bstd::error::error("Couldn't open json file for writing: " + _path +
-        ". Does it exist?", "json::write");
-
-  for(auto child : m_children)
-    ofs << child;
+  // TODO: handle whitespace and newlines.
+  for(const auto& child : m_children)
+    ofs << child->to_string();
   // TODO: check file size before or after writing.
 }
 

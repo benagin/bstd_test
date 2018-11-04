@@ -1,45 +1,43 @@
 #ifndef VALUE_HPP_
 #define VALUE_HPP_
 
-#include "json.hpp"
+#include <algorithm>
+#include <sstream>
+#include <vector>
+
+#include "json_base.hpp"
 
 namespace bstd::json {
 
-// Interface between the base json class and derived classes.
-// Here, we can prevent the derived classes from accessing certain methods.
 // This class represents a value from the grammar (https://www.json.org/).
 // Different from the grammar, this class stores the associated string (name).
 // This string is seen under member in the grammar.
-class value : public json {
+class value : public json_base {
 
   public:
 
+    value(const bool _debug) : json_base(_debug) {}
+
+    virtual ~value() = 0;
+
     // Getters.
 
-    // Derived classes do not have multiple objects at the top level.
-    const std::vector<json*>& get_children() const  = delete;
-
+    // Only values have names, so this is marked final.
     virtual const std::string& get_name() const final;
 
-    // Derived classes do not store a path.
-    const std::string& get_path() const = delete;
+    virtual const std::size_t size() const = 0;
+
+    // Member functions.
 
     virtual const std::string to_string() const = 0;
 
-    // Since derived classes don't store a path we can't write without an
-    // argument.
-    void write() const = delete;
+    virtual void parse(const std::string& _string) = 0;
 
     virtual void write(const std::string& _path) const = 0;
 
   protected:
 
-    // Only accessed from derived classes.
-    value(const bool _debug) : json(_debug) {}
-    value(const std::string& _string, const bool _debug)
-        : json(_string, _debug) {}
-
-    ~value() {}
+    bool m_debug{false};
 
   private:
 

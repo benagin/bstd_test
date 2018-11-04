@@ -14,10 +14,15 @@ class object final : public value {
 
     object(const bool _debug = false) : value(_debug) {}
 
+    // TODO: implement.
     object(const std::string& _string, const bool _debug = false)
-        : value(_string, _debug) {}
+        : object(_debug) {}
 
     ~object() {}
+
+    // Getters.
+
+    const std::size_t size() const override;
 
     // Accessors.
 
@@ -27,10 +32,20 @@ class object final : public value {
     value& at(const std::string& _string);
     const value& at(const std::string& _string) const;
 
-    friend std::ostream& operator<<(std::ostream& _os,
-        const object& _object) {
-      return _os << _object.to_string();
-    }
+    // Operator overloads.
+
+    bool operator==(const object& _rhs);
+
+    object& operator+=(const object& _rhs);
+
+    // Member functions.
+
+    const std::string to_string() const override;
+
+    // TODO: implement.
+    void parse(const std::string& _string) override {}
+
+    void write(const std::string& _path) const override;
 
   private:
 

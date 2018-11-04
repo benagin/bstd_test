@@ -1,15 +1,8 @@
 #ifndef JSON_HPP_
 #define JSON_HPP_
 
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include <bstd_error.hpp>
-
+#include "structures/json_base.hpp"
+#include "structures/value.hpp"
 #include "parser/parser.hpp"
 
 namespace bstd::json {
@@ -20,13 +13,12 @@ namespace bstd::json {
 // object(s). Changes can then be written back to the JSON file.
 // This also acts as the highest object in the grammar found here:
 // https://www.json.org/
-// All other JSON objects inherit from this class.
-class json {
+class json final : public json_base {
 
   public:
 
     // Empty json object. Populate with a call to json::parse(string).
-    json(const bool _debug = false) : m_debug(_debug) {}
+    json(const bool _debug = false) : json_base(_debug) {}
 
     // Construct from a JSON string.
     // This begins the parsing process.
@@ -34,14 +26,14 @@ class json {
 
     json& operator=(json _rhs);
 
-    virtual ~json() {}
+    ~json() {}
 
     // Getters.
 
     // Returns the size of m_children.
-    virtual const size_t size() const;
+    const std::size_t size() const override;
 
-    const std::vector<json*>& get_children() const;
+    const std::vector<value*>& get_children() const;
 
     const std::string& get_path() const;
 
@@ -49,33 +41,30 @@ class json {
 
     // True if this contains exactly the same children as _rhs.
     // TODO: determine if this is what we really want.
-    virtual bool operator==(const json& _rhs);
+    bool operator==(const json& _rhs);
 
-    virtual json& operator+=(const json& _rhs);
+    json& operator+=(const json& _rhs);
 
+    // TODO: check if we need different forms of this function.
+    //       Also, if might be good to be able to add json to a string.
     friend json operator+(json _lhs, const json& _rhs);
-
-    friend std::ostream& operator<<(std::ostream& _os, const json& _json);
 
     // Member functions.
 
-    virtual const std::string to_string() const;
+    const std::string to_string() const override;
 
     // Parse a json string.
     // Called by json::json(string, bool) constructor.
-    virtual void parse(const std::string& _string) final;
+    void parse(const std::string& _string) override;
 
-    virtual void add_child(json* _child) final;
-    virtual void add_children(const std::vector<json*>&
-        _children) final;
+    void add_child(value* _child);
+    void add_children(const std::vector<value*>&
+        _children);
 
     // Writes the json object to m_path or _path if provided.
+    // Note: this erases the contents of _path if the file exists.
     void write() const;
-    virtual void write(const std::string& _path) const;
-
-  protected:
-
-    bool m_debug{false};
+    void write(const std::string& _path) const override;
 
   private:
 
@@ -84,7 +73,7 @@ class json {
     std::string m_path{""};
 
     // The json objects at the highest level in the .json file.
-    std::vector<json*> m_children;
+    std::vector<value*> m_children;
 
 };
 
