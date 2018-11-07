@@ -12,7 +12,7 @@
 namespace bstd::test {
 
 // Unit testing tool.
-// For usage see bstd/doc/test/usage.txt
+// For usage see bstd/doc/test/usage.txt.
 class unit_test {
 
   public:
