@@ -1,0 +1,34 @@
+Deriving from bstd::test::unit_test:
+
+  Create a class that derives bstd::test::unit_test.
+  Write unit tests as member functions of the derived class.
+  These functions should match the following signature (the only hard
+  requirements are the return type and lack of arguments):
+
+    const bstd::test::result test_name() const {
+      ...
+      Test code here
+      Initialize success and reason.
+      ...
+
+      // Return <bool, std::string> pair.
+      // The boolean (test_passed) represents the test's success.
+      // The string contains the reason for failure if applicable.
+      return bstd::test::result(success, reason);
+    }
+
+  Where bstd::test::result is std::pair<bool, std::string>.
+
+  In the derived class' constructor call add_test(test_name) for each
+  unit test function.
+  Then, initialize the derived class and call derived.test() to execute all unit
+  tests and write results to stdandard output.
+
+Initializing unit_test:
+
+  test = new unit_test();
+  test.add_test(test_name1).add_test(test_name2).add_test(test_name3).test();
+
+  Where test_namex are unit test functions that follow the signature above.
+
+  Note: chaining the add_test(...) and test() calls are, of course, not required.
