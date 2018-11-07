@@ -7,6 +7,7 @@ debug ?= 0
 BSTD  := bstd
 JSON  := json
 ERROR := error
+TEST  := test
 
 # Directory Layout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -55,11 +56,15 @@ JSON_OBJS := $(JSON_SRCS:.cpp=.o)
 JSON_EXEC := $(BIN_DIR)/json
 JSON_LIB  := $(BIN_DIR)/libbstdjson.so
 
+TEST_SRCS := $(shell find $(TEST_SRC) -path "*.cpp")
+TEST_OBJS := $(TEST_SRCS:.cpp=.o)
+TEST_LIB  := $(BIN_DIR)/libbstdtest.so
+
 BOOST_LIB :=
 
-SRCS := $(JSON_SRCS) $(ERROR_SRCS)
-OBJS := $(JSON_OBJS) $(ERROR_OBJS)
-LIBS := $(ERROR_LIB) $(JSON_LIB)
+SRCS := $(JSON_SRCS) $(ERROR_SRCS) $(TEST_SRCS)
+OBJS := $(JSON_OBJS) $(ERROR_OBJS) $(TEST_OBJS)
+LIBS := $(ERROR_LIB) $(JSON_LIB) $(TEST_LIB)
 
 LFLAGS := $(BOOST_LIB)
 
@@ -74,14 +79,14 @@ LFLAGS := $(BOOST_LIB)
 
 # Executable Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-all:	$(ERROR) $(JSON) $(BSTD)
+all:	$(ERROR) $(JSON) $(TEST) $(BSTD)
 
 # bstd
 
 # Library
 bstd:	$(BSTD_LIB)
 $(BSTD_LIB):    $(LIBS)
-		@echo Linking $@...$(END)
+		@echo Linking $@...
 		@$(CXX) $(CXXFLAGS) $(LIBS) -o $@
 		@rm -f $(JSON_OBJS)
 
@@ -90,13 +95,13 @@ $(BSTD_LIB):    $(LIBS)
 # Executable
 json:	$(JSON_EXEC)
 $(JSON_EXEC):	$(JSON_LIB) $(JSON_OBJS)
-		@echo Linking $@...$(END)
+		@echo Linking $@...
 		@$(CXX) $(JSON_OBJS) $(LFLAGS) -o $@
 		@rm -f $(JSON_OBJS)
 
 # Library
 $(JSON_LIB):	$(JSON_OBJS)
-		@echo Linking $@...$(END)
+		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) $(LFLAGS) -o $@ $^
 
 # bstd::error
@@ -104,7 +109,7 @@ $(JSON_LIB):	$(JSON_OBJS)
 # Library
 error:	$(ERROR_LIB)
 $(ERROR_LIB):	$(ERROR_OBJS)
-		@echo Linking $@...$(END)
+		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) -o $@ $^
 		@rm -f $(ERROR_OBJS)
 
@@ -113,9 +118,9 @@ $(ERROR_LIB):	$(ERROR_OBJS)
 # Library
 test:	$(TEST_LIB)
 $(TEST_LIB):	$(TEST_OBJS)
-		@echo Linking $@...$(END)
+		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) -o $@ $^
-		@rm -f $(ERROR_OBJS)
+		@rm -f $(TEST_OBJS)
 
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
