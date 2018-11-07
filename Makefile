@@ -1,13 +1,5 @@
 # Configuration options ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# Colors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
-RED   ?= "\033[0;31m"
-BLUE  ?= "\033[0;34m"
-GREEN ?= "\033[0;36m"
-END   ?= "\033[0m"
-
-# Set debug mode.
 debug ?= 0
 
 # Project and tool names ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -30,18 +22,18 @@ DEPENDENCY_DIR := ./build/dependencies
 DEPENDENCIES   := $(DEPENDENCY_DIR)/dependencies
 D_FILES        := $(DEPENDENCY_DIR)/$*.d
 
-JSON_INC ?= -Iinclude/json
+JSON_INC  ?= -Iinclude/json
 ERROR_INC ?= -Iinclude/error
-TEST_INC ?= -Iinclude/test
-PROJ_INC ?= $(JSON_INC) $(ERROR_INC) $(TEST_INC) -I$(JSON_SRC) -I$(ERROR_SRC) \
-	    -I$(TEST_SRC)
+TEST_INC  ?= -Iinclude/test
+PROJ_INC  ?= $(JSON_INC) $(ERROR_INC) $(TEST_INC) -I$(JSON_SRC) -I$(ERROR_SRC) \
+	     -I$(TEST_SRC)
 
 INC_DIRS ?= $(PROJ_INC)
 
 # Compiler Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 CXX 	 = g++
-CXXFLAGS = -std=c++17 -Wall -Werror -pedantic -fPIC
+CXXFLAGS = -stdlib=libc++ -std=c++1z -Wall -Werror -pedantic -fPIC
 LDFLAGS  = -shared
 
 ifeq ($(debug), 1)
@@ -63,7 +55,7 @@ JSON_OBJS := $(JSON_SRCS:.cpp=.o)
 JSON_EXEC := $(BIN_DIR)/json
 JSON_LIB  := $(BIN_DIR)/libbstdjson.so
 
-BOOST_LIB := -lboost_system -lboost_filesystem
+BOOST_LIB :=
 
 SRCS := $(JSON_SRCS) $(ERROR_SRCS)
 OBJS := $(JSON_OBJS) $(ERROR_OBJS)
@@ -99,7 +91,7 @@ $(BSTD_LIB):    $(LIBS)
 json:	$(JSON_EXEC)
 $(JSON_EXEC):	$(JSON_LIB) $(JSON_OBJS)
 		@echo $(BLUE)Linking $@...$(END)
-		@$(CXX) $(CXXFLAGS) $(JSON_OBJS) -o $@
+		@$(CXX) $(JSON_OBJS) $(LFLAGS) -o $@
 		@rm -f $(JSON_OBJS)
 
 # Library

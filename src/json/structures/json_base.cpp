@@ -16,7 +16,7 @@ operator<<(std::ostream& _os, const json_base& _json_base) {
 std::fstream
 json_base::
 open_json_file(const std::string& _path, std::ios_base::openmode _mode) const {
-  if(!check_extension(_path))
+  if(!is_json_extension(_path))
     throw bstd::error::error("json_base::open_json_file",
         "Couldn't open json file: " + _path + ". The extension is not '.json'");
 
@@ -32,7 +32,7 @@ open_json_file(const std::string& _path, std::ios_base::openmode _mode) const {
 
 const bool
 json_base::
-check_extension(const std::string& _path) const {
+is_json_extension(const std::string& _path) const {
   constexpr std::string_view dot_json{".json"};
   const auto extension =
     _path.substr(_path.size() - dot_json.length());

@@ -30,7 +30,7 @@ class json final : public json_base {
 
     // Getters.
 
-    // Returns the size of m_children.
+    // Returns m_children.size().
     const std::size_t size() const override;
 
     const std::vector<value*>& get_children() const;
@@ -46,7 +46,7 @@ class json final : public json_base {
     json& operator+=(const json& _rhs);
 
     // TODO: check if we need different forms of this function.
-    //       Also, if might be good to be able to add json to a string.
+    //       Also, it might be good to be able to add json to a string.
     friend json operator+(json _lhs, const json& _rhs);
 
     // Member functions.
@@ -67,8 +67,6 @@ class json final : public json_base {
     void write(const std::string& _path) const override;
 
   private:
-
-    const std::size_t MAX_STRING_SIZE{4194304};
 
     std::string m_path{""};
 

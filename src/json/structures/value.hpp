@@ -2,7 +2,6 @@
 #define VALUE_HPP_
 
 #include <algorithm>
-#include <sstream>
 #include <vector>
 
 #include "json_base.hpp"

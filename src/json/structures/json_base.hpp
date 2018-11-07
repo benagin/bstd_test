@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include <bstd_error.hpp>
@@ -14,7 +15,7 @@ class json_base {
 
   public:
 
-    json_base(const bool _debug) :m_debug(_debug) {}
+    json_base(const bool _debug) : m_debug(_debug) {}
 
     virtual ~json_base() = 0;
 
@@ -34,11 +35,9 @@ class json_base {
     virtual std::fstream open_json_file(const std::string& _path,
         std::ios_base::openmode _mode) const final;
 
-    virtual const bool check_extension(const std::string& _path) const final;
+    virtual const bool is_json_extension(const std::string& _path) const final;
 
     bool m_debug{false};
-
-  private:
 
 };
 

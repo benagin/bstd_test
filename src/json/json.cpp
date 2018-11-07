@@ -6,31 +6,21 @@ json::
 json(const std::string& _string, const bool _debug) : json(_debug) {
   auto json_string = _string;
 
-  // Check if we have a JSON string or path.
-  if(check_extension(_string)) {
+  try {
     // Try to open string as a path.
+    auto ifs = json_base::open_json_file(_string, std::fstream::in);
 
-    // TODO: implement file size check.
-    auto ifs = open_json_file(_string, std::fstream::in);
-
-    std::stringstream stream;
-    stream << ifs.rdbuf();
-    json_string = stream.str();
+    json_string = std::string((std::istreambuf_iterator<char>(ifs)),
+        std::istreambuf_iterator<char>());
+  }
+  catch(bstd::error::error& _e) {
+    if(m_debug)
+      std::cout <<
+        "Couldn't open _string as file. Attempting to parse as a JSON string."
+        << std::endl;
   }
 
-  if(m_debug)
-    std::cout << "Parsing json string: " << std::endl << json_string << std::endl;
-
-  // Limit the size of JSON strings.
-  if(json_string.size() > MAX_STRING_SIZE) {
-    std::stringstream ss;
-    ss << MAX_STRING_SIZE;
-    throw error::error("btsd::json",
-        "The JSON object is too large. The current maximum string size is "
-        + ss.str());
-  }
-
-  parse(_string);
+  parse(json_string);
 }
 
 
@@ -70,6 +60,7 @@ json::
 to_string() const {
   std::string result = "";
 
+  // TODO: handle whitespace and newlines.
   for(auto child : m_children)
     result += child->to_string();
 
@@ -104,7 +95,6 @@ operator+=(const json& _rhs) {
 }
 
 
-// TODO: add max size check.
 json
 operator+(json _lhs, const json& _rhs) {
   _lhs += _rhs;
@@ -121,7 +111,6 @@ parse(const std::string& _string) {
 }
 
 
-// TODO: add max size check.
 void
 json::
 add_children(const std::vector<value*>& _children) {
@@ -130,7 +119,6 @@ add_children(const std::vector<value*>& _children) {
 }
 
 
-// TODO: add max size check.
 void
 json::
 add_child(value* _child) {
@@ -148,12 +136,12 @@ write() const {
 void
 json::
 write(const std::string& _path) const {
-  auto ofs = open_json_file(_path, std::fstream::out | std::fstream::trunc);
+  auto ofs =
+    json_base::open_json_file(_path, std::fstream::out | std::fstream::trunc);
 
   // TODO: handle whitespace and newlines.
   for(const auto& child : m_children)
     ofs << child->to_string();
-  // TODO: check file size before or after writing.
 }
 
 

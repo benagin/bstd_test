@@ -70,7 +70,8 @@ to_string() const {
 void
 object::
 write(const std::string& _path) const {
-  auto ofs = open_json_file(_path, std::fstream::out | std::fstream::trunc);
+  auto ofs =
+    json_base::open_json_file(_path, std::fstream::out | std::fstream::trunc);
 
   // TODO: handle whitespace and newlines.
   for(const auto& value : m_values)
