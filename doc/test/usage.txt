@@ -5,7 +5,7 @@ Deriving from bstd::test::unit_test:
   These functions should match the following signature (the only hard
   requirements are the return type and lack of arguments):
 
-    const bstd::test::result test_name() const {
+    const bstd::test::result test_example() const {
       ...
       Test code here
       Initialize success and reason.
@@ -19,7 +19,7 @@ Deriving from bstd::test::unit_test:
 
   Where bstd::test::result is std::pair<bool, std::string>.
 
-  In the derived class' constructor call add_test(test_name) for each
+  In the derived class' constructor call add_test(...) for each
   unit test function.
   Then, initialize the derived class and call derived.test() to execute all unit
   tests and write results to stdandard output.
@@ -27,8 +27,9 @@ Deriving from bstd::test::unit_test:
 Initializing unit_test:
 
   test = new unit_test();
-  test.add_test(test_name1).add_test(test_name2).add_test(test_name3).test();
+  test.add_test("test_name1", test1).add_test("test_name2", test2
+      .add_test("test_name3", test3).test();
 
-  Where test_namex are unit test functions that follow the signature above.
+  Where testx are unit test functions that follow the signature above.
 
   Note: chaining the add_test(...) and test() calls are, of course, not required.
