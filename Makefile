@@ -81,7 +81,7 @@ all:	$(ERROR) $(JSON) $(BSTD)
 # Library
 bstd:	$(BSTD_LIB)
 $(BSTD_LIB):    $(LIBS)
-		@echo $(BLUE)Linking $@...$(END)
+		@echo Linking $@...$(END)
 		@$(CXX) $(CXXFLAGS) $(LIBS) -o $@
 		@rm -f $(JSON_OBJS)
 
@@ -90,13 +90,13 @@ $(BSTD_LIB):    $(LIBS)
 # Executable
 json:	$(JSON_EXEC)
 $(JSON_EXEC):	$(JSON_LIB) $(JSON_OBJS)
-		@echo $(BLUE)Linking $@...$(END)
+		@echo Linking $@...$(END)
 		@$(CXX) $(JSON_OBJS) $(LFLAGS) -o $@
 		@rm -f $(JSON_OBJS)
 
 # Library
 $(JSON_LIB):	$(JSON_OBJS)
-		@echo $(BLUE)Linking $@...$(END)
+		@echo Linking $@...$(END)
 		@$(CXX) $(LDFLAGS) $(LFLAGS) -o $@ $^
 
 # bstd::error
@@ -104,11 +104,19 @@ $(JSON_LIB):	$(JSON_OBJS)
 # Library
 error:	$(ERROR_LIB)
 $(ERROR_LIB):	$(ERROR_OBJS)
-		@echo $(BLUE)Linking $@...$(END)
+		@echo Linking $@...$(END)
 		@$(CXX) $(LDFLAGS) -o $@ $^
 		@rm -f $(ERROR_OBJS)
 
 # bstd::test
+
+# Library
+test:	$(TEST_LIB)
+$(TEST_LIB):	$(TEST_OBJS)
+		@echo Linking $@...$(END)
+		@$(CXX) $(LDFLAGS) -o $@ $^
+		@rm -f $(ERROR_OBJS)
+
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
