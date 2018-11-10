@@ -33,8 +33,8 @@ D_FILES        := $(DEPENDENCY_DIR)/$*.d
 JSON_INC  ?= -Iinclude/json
 ERROR_INC ?= -Iinclude/error
 TEST_INC  ?= -Iinclude/test
-PROJ_INC  := $(JSON_INC) $(ERROR_INC) $(TEST_INC) -I$(JSON_SRC) -I$(ERROR_SRC) \
-	     -I$(TEST_SRC)
+PROJ_INC  := -Iinclude $(JSON_INC) $(ERROR_INC) $(TEST_INC) -I$(JSON_SRC) \
+	     -I$(ERROR_SRC) -I$(TEST_SRC)
 
 INC_DIRS ?= $(PROJ_INC)
 
