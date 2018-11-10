@@ -100,6 +100,7 @@ LIBS := $(ERROR_LIB) $(JSON_LIB) $(TEST_LIB)
 all:	$(BSTD) $(EXAMPLES) $(TESTS)
 
 # Build bstd library.
+.PHONY: $(BSTD)
 $(BSTD):	$(BSTD_LIB)
 $(BSTD_LIB):    $(LIBS)
 		@echo Linking $@...
@@ -107,12 +108,14 @@ $(BSTD_LIB):    $(LIBS)
 		@rm -f $(OBJS)
 
 # Build bstd::json library.
+.PHONY: $(JSON)
 $(JSON):	$(JSON_LIB)
 $(JSON_LIB):	$(JSON_OBJS)
 		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) -o $@ $^
 
 # Build bstd::error library.
+.PHONY: $(ERROR)
 $(ERROR):	$(ERROR_LIB)
 $(ERROR_LIB):	$(ERROR_OBJS)
 		@echo Linking $@...
@@ -120,6 +123,7 @@ $(ERROR_LIB):	$(ERROR_OBJS)
 		@rm -f $(ERROR_OBJS)
 
 # Build bstd::test library.
+.PHONY: $(TEST)
 $(TEST):	$(TEST_LIB)
 $(TEST_LIB):	$(TEST_OBJS)
 		@echo Linking $@...
@@ -127,9 +131,11 @@ $(TEST_LIB):	$(TEST_OBJS)
 		@rm -f $(TEST_OBJS)
 
 # Build all examples.
+.PHONY: $(EXAMPLES)
 $(EXAMPLES): $(JSON_EXAMPLES) $(TEST_EXAMPLES)
 
 # Build bstd::json examples.
+.PHONY: json_examples
 json_examples:	   $(JSON_EXAMPLES)
 $(JSON_EXAMPLES):  $(JSON_EXAMPLE_SRCS) $(JSON_LIB)
 		    @echo Compiling $<...
@@ -137,6 +143,7 @@ $(JSON_EXAMPLES):  $(JSON_EXAMPLE_SRCS) $(JSON_LIB)
 		    @cat $(D_FILES) >> $(DEPENDENCIES)
 
 # Build bstd::test examples.
+.PHONY: test_examples
 test_examples:	   $(TEST_EXAMPLES)
 $(TEST_EXAMPLES):  $(TEST_EXAMPLE_SRCS) $(TEST_LIB)
 		    @echo Compiling $<...
@@ -144,16 +151,16 @@ $(TEST_EXAMPLES):  $(TEST_EXAMPLE_SRCS) $(TEST_LIB)
 		    @cat $(D_FILES) >> $(DEPENDENCIES)
 
 # Build all tests.
+.PHONY: $(TESTS)
 $(TESTS):      $(JSON_TESTS)
 
 # Build bstd::json tests.
+.PHONY: json_tests
 json_tests:	$(JSON_TESTS)
 $(JSON_TESTS):	$(JSON_TEST_SRCS) $(TEST_LIB) $(JSON_LIB)
 		@echo Compiling $<...
 		@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_ALL) $(INC_DIRS) $< -o $@
 		@cat $(D_FILES) >> $(DEPENDENCIES)
-
-
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -168,7 +175,7 @@ clean:
 	@rm -f $(DEPENDENCIES)
 	@rm -f $(BIN_DIR)/*
 
-# Other Stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 # include automatically generated dependencies
 -include $(DEPENDENCIES)
