@@ -1,15 +1,1 @@
-CLI usage:
-
-./jsonparse [-t] [-d] <path-to-json-file>
-
-  help, --help
-    Show usage.
-
-  -t, --test
-    Run tests.
-
-  -d, --debug
-    Print debug information.
-
-  -v, --verbose
-    Same as -d.
+For usage see examples at src/examples/json.
