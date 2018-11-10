@@ -1,3 +1,30 @@
 # bstd
 
 A library of tools for use in my other projects.
+
+## Usage
+
+### Clone and build
+
+1. ```git clone git@github.com:benagin/bstd.git```
+2. ```cd bstd```
+3. ```make```
+
+### Include public headers
+
+Assuming the path to `bstd` is included with ```-I<path-to-bstd>``` or something similar:
+
+* All public headers: ```#include "bstd/include/bstd.hpp"```
+* bstd::json public headers: ```#include "bstd/include/json/bstd_json.hpp"```
+* bstd::error public headers: ```#include "bstd/include/error/bstd_error.hpp"```
+* bstd::test public headers: ```#include "bstd/include/test/bstd_test.hpp"```
+
+Alternatively, include ```bstd/include``` or ```bstd/include/<tool>``` in gcc or equivalent:
+* ```-Ibstd/include```
+* ```-Ibstd/include/<tool>```
+
+Then use (depending on which headers you want to use):
+* ```#include <bstd.hpp>```
+* ```#include <bstd_json.hpp>```
+* ```#include <bstd_error.hpp>```
+* ```#include <bstd_test.hpp>```
