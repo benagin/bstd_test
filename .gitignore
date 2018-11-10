@@ -4,3 +4,6 @@ dependencies/
 *.d
 *.o
 *.so
+
+json_example1
+test_json1

@@ -4,38 +4,52 @@ debug ?= 0
 
 # Project and tool names ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-BSTD  := bstd
-JSON  := json
-ERROR := error
-TEST  := test
+BSTD  ?= bstd
+JSON  ?= json
+ERROR ?= error
+TEST  ?= test
+
+EXAMPLES ?= examples
+
+TESTS ?= tests
 
 # Directory Layout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 $(shell mkdir -p bin)
-BIN_DIR := ./bin
+BIN_DIR ?= ./bin
 
 JSON_SRC  ?= ./src/json
 ERROR_SRC ?= ./src/error
 TEST_SRC  ?= ./src/test
 
+JSON_EXAMPLES_SRC  ?= ./examples/json
+TEST_EXAMPLES_SRC  ?= ./examples/test
+
+JSON_TESTS_SRC  ?= ./test/json
+
 $(shell mkdir -p build/dependencies)
-DEPENDENCY_DIR := ./build/dependencies
+DEPENDENCY_DIR ?= ./build/dependencies
 DEPENDENCIES   := $(DEPENDENCY_DIR)/dependencies
 D_FILES        := $(DEPENDENCY_DIR)/$*.d
 
 JSON_INC  ?= -Iinclude/json
 ERROR_INC ?= -Iinclude/error
 TEST_INC  ?= -Iinclude/test
-PROJ_INC  ?= $(JSON_INC) $(ERROR_INC) $(TEST_INC) -I$(JSON_SRC) -I$(ERROR_SRC) \
+PROJ_INC  := $(JSON_INC) $(ERROR_INC) $(TEST_INC) -I$(JSON_SRC) -I$(ERROR_SRC) \
 	     -I$(TEST_SRC)
 
 INC_DIRS ?= $(PROJ_INC)
 
 # Compiler Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-CXX 	 = g++
-CXXFLAGS = -stdlib=libc++ -std=c++1z -Wall -Werror -pedantic -fPIC
-LDFLAGS  = -shared
+CXX 	  = g++
+CXXFLAGS  = -std=c++17 -Wall -Werror -pedantic -fPIC
+LDFLAGS   = -shared
+LINK      = -Lbin
+LINK_JSON = $(LINK) -lbstdjson
+LINK_TEST = $(LINK) -lbstdtest
+LINK_ALL = $(LINK_JSON) $(LINK_TEST)
+
 
 ifeq ($(debug), 1)
 	CXXFLAGS += -g
@@ -53,20 +67,27 @@ ERROR_LIB := $(BIN_DIR)/libbstderror.so
 
 JSON_SRCS := $(shell find $(JSON_SRC) -path "*.cpp")
 JSON_OBJS := $(JSON_SRCS:.cpp=.o)
-JSON_EXEC := $(BIN_DIR)/json
 JSON_LIB  := $(BIN_DIR)/libbstdjson.so
+
+JSON_EXAMPLE_SRCS := $(shell find $(JSON_EXAMPLES_SRC) -path "*.cpp")
+JSON_EXAMPLE_OBJS := $(JSON_EXAMPLE_SRCS:.cpp=.o)
+JSON_EXAMPLES     := $(basename $(JSON_EXAMPLE_SRCS))
+JSON_TEST_SRCS    := $(shell find $(JSON_TESTS_SRC) -path "*.cpp")
+JSON_TESTS        := $(basename $(JSON_TEST_SRCS))
+JSON_TEST_EXEC    := $(BIN_DIR)/$(JSON_TEST)
 
 TEST_SRCS := $(shell find $(TEST_SRC) -path "*.cpp")
 TEST_OBJS := $(TEST_SRCS:.cpp=.o)
 TEST_LIB  := $(BIN_DIR)/libbstdtest.so
 
-BOOST_LIB :=
+TEST_EXAMPLE_SRCS := $(shell find $(TEST_EXAMPLES_SRC) -path "*.cpp")
+TEST_EXAMPLE_OBJS := $(TEST_EXAMPLE_SRCS:.cpp=.o)
+
+TESTS_EXEC := $(BIN_DIR)/$(TESTS)
 
 SRCS := $(JSON_SRCS) $(ERROR_SRCS) $(TEST_SRCS)
 OBJS := $(JSON_OBJS) $(ERROR_OBJS) $(TEST_OBJS)
 LIBS := $(ERROR_LIB) $(JSON_LIB) $(TEST_LIB)
-
-LFLAGS := $(BOOST_LIB)
 
 # Object File Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -79,35 +100,31 @@ LFLAGS := $(BOOST_LIB)
 
 # Executable Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-all:	$(ERROR) $(JSON) $(TEST) $(BSTD)
+all:	$(BSTD) $(EXAMPLES) $(TESTS)
 
 # bstd
 
 # Library
-bstd:	$(BSTD_LIB)
+$(BSTD):	$(BSTD_LIB)
 $(BSTD_LIB):    $(LIBS)
 		@echo Linking $@...
-		@$(CXX) $(CXXFLAGS) $(LIBS) -o $@
-		@rm -f $(JSON_OBJS)
+		@$(CXX) $(LDFLAGS) $(LIBS) -o $@
+		@rm -f $(OBJS)
 
 # bstd::json
 
 # Executable
-json:	$(JSON_EXEC)
-$(JSON_EXEC):	$(JSON_LIB) $(JSON_OBJS)
-		@echo Linking $@...
-		@$(CXX) $(JSON_OBJS) $(LFLAGS) -o $@
-		@rm -f $(JSON_OBJS)
 
 # Library
+$(JSON):	$(JSON_LIB)
 $(JSON_LIB):	$(JSON_OBJS)
 		@echo Linking $@...
-		@$(CXX) $(LDFLAGS) $(LFLAGS) -o $@ $^
+		@$(CXX) $(LDFLAGS) -o $@ $^
 
 # bstd::error
 
 # Library
-error:	$(ERROR_LIB)
+$(ERROR):	$(ERROR_LIB)
 $(ERROR_LIB):	$(ERROR_OBJS)
 		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) -o $@ $^
@@ -116,15 +133,36 @@ $(ERROR_LIB):	$(ERROR_OBJS)
 # bstd::test
 
 # Library
-test:	$(TEST_LIB)
+$(TEST):	$(TEST_LIB)
 $(TEST_LIB):	$(TEST_OBJS)
 		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) -o $@ $^
 		@rm -f $(TEST_OBJS)
 
+# Build examples.
+
+$(EXAMPLES): $(JSON_EXAMPLES)
+
+$(JSON_EXAMPLES):  $(JSON_EXAMPLE_SRCS) $(JSON_LIB)
+		    @echo Compiling $<...
+		    @$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_JSON) $(INC_DIRS) $< -o $@
+		    @cat $(D_FILES) >> $(DEPENDENCIES)
+
+# TODO: bstd::test examples.
+
+# Build tests.
+$(TESTS):      $(JSON_TESTS)
+
+$(JSON_TESTS):	$(JSON_TEST_SRCS) $(TEST_LIB) $(JSON_LIB)
+		@echo Compiling $<...
+		@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_ALL) $(INC_DIRS) $< -o $@
+		@cat $(D_FILES) >> $(DEPENDENCIES)
+
+
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# TODO: clean examples and test
 .PHONY: clean
 clean:
 	@echo Cleaning...
