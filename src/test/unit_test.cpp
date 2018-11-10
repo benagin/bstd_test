@@ -6,8 +6,8 @@ namespace bstd::test {
 
 unit_test&
 unit_test::
-add_test(const std::string& _name, const std::function<const result()>& _test) {
-  m_tests.insert(std::pair<std::string, std::function<const result()>>(_name,
+add_test(const std::string& _name, test_function _test) {
+  m_tests.insert(std::pair<std::string, test_function>(_name,
         _test));
   return *this;
 }
@@ -15,11 +15,11 @@ add_test(const std::string& _name, const std::function<const result()>& _test) {
 
 void
 unit_test::
-test() const {
-  int passed = 0;
+test() {
+  std::size_t passed = 0;
 
   for(const auto& [name, test] : m_tests) {
-    const auto& result = test();
+    const auto result = (this->*test)();
 
     std::cout << name;
 
@@ -32,16 +32,18 @@ test() const {
   }
 
   const auto& total = m_tests.size();
+  std::stringstream output;
+
   if(passed == total)
-    std::cout << "All tests passed!" << std::endl;
+    output << "All (" << total << ") tests passed!";
   else {
     const double ratio = ((double) passed / (double) total) * 100;
     const int percent = ratio;
 
-    std::stringstream output;
     output << percent << "% (" << passed << "/" << total << ") of tests passed.";
-    std::cout << output.str() << std::endl;
   }
+
+  std::cout << output.str() << std::endl;
 }
 
 

@@ -17,9 +17,24 @@ class unit_test {
 
   public:
 
+    // Function signature for unit test functions.
+    // const bstd::test::result test_function() const {
+    //   ...
+    //   Testing code here.
+    //   ...
+    //
+    //   return result;
+    // }
+    typedef const result (unit_test::*test_function)() const;
+
     unit_test() {}
 
-    ~unit_test() {}
+    virtual ~unit_test() {}
+
+    // Calls add_test(std::string, test_function).
+    // Usage:
+    //  ADD_TEST(test_class::test_function);
+#define ADD_TEST(function) add_test(#function, static_cast<test_function>(&function))
 
     // Returns *this so that this function can be chained.
     // Note: test() can be called as a part of this chain.
@@ -28,16 +43,17 @@ class unit_test {
     //  test.add_test("foo", foo).add_test("bar", bar
     //      .add_test("foo_bar", foo_bar).test();
     virtual unit_test& add_test(const std::string& _name,
-        const std::function<const result()>& _test) final;
+        test_function _test) final;
 
     // Run each function in m_tests and write results to standard output.
-    virtual void test() const final;
+    virtual void test() final;
 
   private:
 
-    std::map<std::string, std::function<const result()>> m_tests;
+    std::map<std::string, test_function> m_tests;
 
 };
+
 
 }
 

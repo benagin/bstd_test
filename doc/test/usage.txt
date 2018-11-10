@@ -1,35 +1,48 @@
 Deriving from bstd::test::unit_test:
 
-  Create a class that derives bstd::test::unit_test.
+  Create a class that derives bstd::test::unit_test (test_class).
   Write unit tests as member functions of the derived class.
-  These functions should match the following signature (the only hard
-  requirements are the return type and lack of arguments):
+  These functions should match the following signature:
 
-    const bstd::test::result test_example() const {
+    const bstd::test::result test_class::test_example() const {
       ...
       Test code here
       Initialize success and reason.
       ...
 
-      // Return <bool, std::string> pair.
-      // The boolean (test_passed) represents the test's success.
+      // The boolean (success) represents the test's success.
       // The string contains the reason for failure if applicable.
       return bstd::test::result(success, reason);
     }
 
   Where bstd::test::result is std::pair<bool, std::string>.
 
-  In the derived class' constructor call add_test(...) for each
-  unit test function.
+  In the derived class' constructor call ADD_TEST(test_class::test_function) for
+  each unit test function.
   Then, initialize the derived class and call derived.test() to execute all unit
   tests and write results to stdandard output.
 
-Initializing unit_test:
+Initializing bstd::test::unit_test (unit_test can be replaced by your derived class):
 
-  test = new unit_test();
-  test.add_test("test_name1", test1).add_test("test_name2", test2
-      .add_test("test_name3", test3).test();
+  auto test = new bstd::test::unit_test();
+  test->add_test("test_name1", test1)->add_test("test_name2", test2)
+      ->add_test("test_name3", test3)->test();
 
-  Where testx are unit test functions that follow the signature above.
+  Where testx are unit test functions that follow the signature above added with
+  the name of test.
 
   Note: chaining the add_test(...) and test() calls are, of course, not required.
+  Note: add_test(...) can be replaced by ADD_TEST(test_class::test_function)
+        when the functions are member functions of test_class.
+
+Derectives
+
+  BSTD_TEST_MAIN(test_class)
+    Includes a main function that creates an instance of and runs the tests
+    contained in test_class.
+    This must be placed after the definition of test_class.
+
+  ADD_TEST(test_class::test_function)
+    Use this directive within the constructor of test_class. Pass the test
+    functions.
+    This acts as a shortcut to avoid a static_cast.
