@@ -23,7 +23,7 @@ Alternatively, include ```bstd/include``` or ```bstd/include/<tool>``` in gcc or
 * ```-Ibstd/include```
 * ```-Ibstd/include/<tool>```
 
-Then use (depending on which headers you want to use):
+Then use (depending on which headers you need):
 * ```#include <bstd.hpp>```
 * ```#include <bstd_json.hpp>```
 * ```#include <bstd_error.hpp>```
