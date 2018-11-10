@@ -1,1 +1,1 @@
-For usage see examples at src/examples/json.
+For usage see examples at bstd/examples/json.
