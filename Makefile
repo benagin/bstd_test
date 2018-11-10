@@ -168,6 +168,8 @@ clean:
 	@echo Cleaning...
 	@rm -f $(shell find $(DEPENDENCY_DIR) -path "*.d")
 	@rm -f $(shell find . -path "*.o")
+	@rm -f $(JSON_EXAMPLES)
+	@rm -f $(JSON_TESTS)
 	@rm -f $(DEPENDENCIES)
 	@rm -f $(BIN_DIR)/*
 
