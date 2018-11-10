@@ -7,6 +7,7 @@ namespace bstd::json {
 json_base::
 ~json_base() {}
 
+
 std::ostream&
 operator<<(std::ostream& _os, const json_base& _json_base) {
   return _os << _json_base.to_string();
