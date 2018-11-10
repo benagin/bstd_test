@@ -1,9 +1,15 @@
-bin/*
-dependencies/
-*.swp
-*.d
-*.o
-*.so
+# Ignore everything.
+*
 
-json_example1
-test_json1
+# Unignore files with extensions.
+!*.*
+
+# Unignore directories.
+!*/
+
+# After the above, files without extensions (executables) are ignored.
+
+bin/*
+build/
+*.swp
+*.o
