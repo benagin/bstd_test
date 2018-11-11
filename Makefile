@@ -137,27 +137,27 @@ $(EXAMPLES): $(JSON_EXAMPLES) $(TEST_EXAMPLES)
 # Build bstd::json examples.
 .PHONY: json_examples
 json_examples:	   $(JSON_EXAMPLES)
-$(JSON_EXAMPLES):  $(JSON_EXAMPLE_SRCS) $(JSON_LIB)
-		    @echo Compiling $<...
-		    @$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_JSON) $(INC_DIRS) $< -o $@
-		    @cat $(D_FILES) >> $(DEPENDENCIES)
+$(JSON_EXAMPLES):  %: %.cpp $(JSON_LIB)
+		   @echo Compiling $<...
+		   @$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_JSON) $(INC_DIRS) $< -o $@
+		   @cat $(D_FILES) >> $(DEPENDENCIES)
 
 # Build bstd::test examples.
 .PHONY: test_examples
 test_examples:	   $(TEST_EXAMPLES)
-$(TEST_EXAMPLES):  $(TEST_EXAMPLE_SRCS) $(TEST_LIB)
-		    @echo Compiling $<...
-		    @$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_TEST) $(INC_DIRS) $< -o $@
-		    @cat $(D_FILES) >> $(DEPENDENCIES)
+$(TEST_EXAMPLES):  %: %.cpp $(TEST_LIB)
+		   @echo Compiling $<...
+		   @$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_TEST) $(INC_DIRS) $< -o $@
+		   @cat $(D_FILES) >> $(DEPENDENCIES)
 
 # Build all tests.
 .PHONY: $(TESTS)
-$(TESTS):      $(JSON_TESTS)
+$(TESTS):	$(JSON_TESTS)
 
 # Build bstd::json tests.
 .PHONY: json_tests
 json_tests:	$(JSON_TESTS)
-$(JSON_TESTS):	$(JSON_TEST_SRCS) $(TEST_LIB) $(JSON_LIB)
+$(JSON_TESTS):	%: %.cpp $(TEST_LIB) $(JSON_LIB)
 		@echo Compiling $<...
 		@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_ALL) $(INC_DIRS) $< -o $@
 		@cat $(D_FILES) >> $(DEPENDENCIES)
