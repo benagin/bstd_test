@@ -8,7 +8,16 @@ A library of tools for use in my other projects.
 
 1. ```git clone git@github.com:benagin/bstd.git```
 2. ```cd bstd```
-3. ```make```
+3. ```make bstd```
+
+##### Available build targets
+1. Build everything: ```make``` or ```make all```
+2. Build all tools (excludes tests): ```make bstd```
+2. Build a single tool: ```make error```, ```make json```, or ```make test```
+3. Build examples: ```make examples```
+4. Build tests: ```make tests```
+
+More specific build commands in their relavent directories.
 
 ### Include public headers
 
