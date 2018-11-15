@@ -1,5 +1,5 @@
-#ifndef RESULT_HPP_
-#define RESULT_HPP_
+#ifndef BSTD_TEST_RESULT_HPP_
+#define BSTD_TEST_RESULT_HPP_
 
 #include <string>
 #include <utility>

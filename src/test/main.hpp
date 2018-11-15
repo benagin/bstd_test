@@ -1,16 +1,13 @@
-#ifndef MAIN_HPP_
-#define MAIN_HPP_
+#ifndef BSTD_TEST_MAIN_HPP_
+#define BSTD_TEST_MAIN_HPP_
 
-// This allows test classes to define a main function that runs the class.
-// Usage:
-// BSTD_TEST_MAIN(class);
-
-#define BSTD_TEST_MAIN(class) \
-int \
-main() { \
-  const auto test_class = new class(); \
-  test_class->test(); \
-  delete test_class; \
-}
+// This includes a main function which runs the tests in the class provided as
+// an argument.
+#define BSTD_TEST_MAIN(test_class_name) \
+  int \
+  main() { \
+    const test_class_name test; \
+    test.run(); \
+  }
 
 #endif
