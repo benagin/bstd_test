@@ -1,4 +1,4 @@
-### Deriving from ```bstd::test::test```:
+### Deriving from ```bstd::test::test```
 
 Create a class that derives ```bstd::test::unit_test``` (```test_class```).
 Write unit tests as methods of the derived class. These methods should match the following signature:
@@ -26,7 +26,7 @@ Finally, initialize the derived class and call ```derived.run()``` to execute al
 Note: Alternatively, use the ```BSTD_TEST_MAIN(test_class)``` macro to create a main function which runs the tests in this 
 class.
 
-### Initializing ```bstd::test::test``` (```bstd::test::test``` can be replaced by your derived class, however the above pattern is preferred):
+### Initializing ```bstd::test::test``` (```bstd::test::test``` can be replaced by your derived class, however the above pattern is preferred)
 
 ```
 auto my_test = new bstd::test::test();
