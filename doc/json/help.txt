@@ -1,5 +1,0 @@
-C++ JSON parser.
-
-This tool will read and parse files that follow the JSON format. It will store
-the JSON objects, arrays, and values into equivalent C++ data structures and
-allowing you to access via a C++ API.
