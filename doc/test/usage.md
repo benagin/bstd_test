@@ -26,8 +26,7 @@ Finally, initialize the derived class and call ```derived.run()``` to execute al
 Note: Alternatively, use the ```BSTD_TEST_MAIN(test_class)``` macro to create a main function which runs the tests in this 
 class.
 
-### Initializing ```bstd::test::test``` (```bstd::test::test``` can be replaced by your derived class, however the above 
-### pattern is preferred):
+### Initializing ```bstd::test::test``` (```bstd::test::test``` can be replaced by your derived class, however the above pattern is preferred):
 
 ```
 auto my_test = new bstd::test::test();
@@ -42,16 +41,16 @@ Note: ```add_test(...)``` can be replaced by the ```ADD_TEST(...)``` macro as de
 
 #### Preprocessor derectives (macros)
 
-```BSTD_TEST_MAIN(test_class)```
+* ```BSTD_TEST_MAIN(test_class)```
   
    Includes a main function that creates an instance of and runs the tests contained in test_class.
    This must be placed after the definition of test_class.
 
-```ADD_TEST(test_class::test_method)```
+* ```ADD_TEST(test_class::test_method)```
   
    Adds test_method to test_class' inherited m_tests vector. When run() is called this test will be executed.
    Call from test_class' constructor.
 
-```ADD_TEST(test_function)```
+* ```ADD_TEST(test_function)```
   
    Same as above, but for non-member function.
