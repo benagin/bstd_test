@@ -70,7 +70,7 @@ to_string() const {
 
 bool
 json::
-operator==(const json& _rhs) {
+operator==(const json& _rhs) const {
   if(size() != _rhs.size())
     return false;
 
@@ -84,6 +84,13 @@ operator==(const json& _rhs) {
   std::sort(rhs_children_copy.begin(), rhs_children_copy.end());
 
   return this_children_copy == rhs_children_copy;
+}
+
+
+bool
+json::
+operator!=(const json& _rhs) const {
+  return !(*this == _rhs);
 }
 
 

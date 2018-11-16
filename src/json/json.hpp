@@ -41,7 +41,9 @@ class json final : public json_base {
 
     // True if this contains exactly the same children as _rhs.
     // TODO: determine if this is what we really want.
-    bool operator==(const json& _rhs);
+    bool operator==(const json& _rhs) const;
+
+    bool operator!=(const json& _rhs) const;
 
     json& operator+=(const json& _rhs);
 
