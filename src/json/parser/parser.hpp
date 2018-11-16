@@ -1,5 +1,5 @@
-#ifndef PARSER_HPP_
-#define PARSER_HPP_
+#ifndef BSTD_JSON_PARSER_HPP_
+#define BSTD_JSON_PARSER_HPP_
 
 #include <fstream>
 #include <iostream>

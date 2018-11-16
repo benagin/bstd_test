@@ -1,5 +1,5 @@
-#ifndef VALUE_HPP_
-#define VALUE_HPP_
+#ifndef BSTD_JSON_VALUE_HPP_
+#define BSTD_JSON_VALUE_HPP_
 
 #include <algorithm>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef JSON_BASE_HPP_
-#define JSON_BASE_HPP_
+#ifndef BSTD_JSON_BASE_HPP_
+#define BSTD_JSON_BASE_HPP_
 
 #include <fstream>
 #include <iostream>

@@ -1,5 +1,5 @@
-#ifndef CONTEXT_ERROR_HPP_
-#define CONTEXT_ERROR_HPP_
+#ifndef BSTD_CONTEXT_ERROR_HPP_
+#define BSTD_CONTEXT_ERROR_HPP_
 
 #include <cmath>
 

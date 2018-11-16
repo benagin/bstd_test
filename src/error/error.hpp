@@ -1,5 +1,5 @@
-#ifndef ERROR_HPP_
-#define ERROR_HPP_
+#ifndef BSTD_ERROR_HPP_
+#define BSTD_ERROR_HPP_
 
 #include <stdexcept>
 #include <string>

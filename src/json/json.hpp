@@ -1,5 +1,5 @@
-#ifndef JSON_HPP_
-#define JSON_HPP_
+#ifndef BSTD_JSON_HPP_
+#define BSTD_JSON_HPP_
 
 #include "structures/json_base.hpp"
 #include "structures/value.hpp"

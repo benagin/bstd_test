@@ -1,5 +1,5 @@
-#ifndef BSTD_ERORR_HPP_
-#define BSTD_ERORR_HPP_
+#ifndef PUBLIC_BSTD_ERORR_HPP_
+#define PUBLIC_BSTD_ERORR_HPP_
 
 // Contains all public header files within the error tool.
 

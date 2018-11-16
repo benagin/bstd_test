@@ -1,5 +1,5 @@
-#ifndef OBJECT_HPP_
-#define OBJECT_HPP_
+#ifndef BSTD_JSON_OBJECT_HPP_
+#define BSTD_JSON_OBJECT_HPP_
 
 #include <map>
 
