@@ -26,7 +26,7 @@ run() const {
 
     if(result.first) {
       ++passed;
-      std::cout << name << " passed." << std::endl;
+      std::cout << name << " passed" << std::endl;
     }
     else {
       const auto reason = !result.second.empty() ? result.second :
