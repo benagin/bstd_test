@@ -113,6 +113,7 @@ $(JSON):	$(JSON_LIB)
 $(JSON_LIB):	$(JSON_OBJS)
 		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) -o $@ $^
+		@rm -f $(JSON_OBJS)
 
 # Build bstd::error library.
 .PHONY: $(ERROR)
