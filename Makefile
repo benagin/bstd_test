@@ -55,7 +55,7 @@ endif
 
 DEPS = -MMD -MF $(D_FILES)
 
-# File Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# File Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 BSTD_LIB := $(BIN_DIR)/libbstd.so
 
