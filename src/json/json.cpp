@@ -28,7 +28,7 @@ json&
 json::
 operator=(json _rhs) {
   std::swap(m_path, _rhs.m_path);
-  std::swap(m_values, _rhs.m_values);
+  std::swap(m_value, _rhs.m_value);
 
   return *this;
 }
@@ -37,14 +37,7 @@ operator=(json _rhs) {
 const std::size_t
 json::
 size() const {
-  return m_values.size();
-}
-
-
-const std::vector<std::shared_ptr<value>>&
-json::
-get_values() const {
-  return m_values;
+  return m_value->size();
 }
 
 
@@ -55,16 +48,31 @@ get_path() const {
 }
 
 
+void
+json::
+set_path(const std::string& _path) {
+  m_path = _path;
+}
+
+
+const std::shared_ptr<value>&
+json::
+get_value() const {
+  return m_value;
+}
+
+
+void
+json::
+set_value(const std::shared_ptr<value>& _value) {
+  m_value = _value;
+}
+
+
 const std::string
 json::
 to_string() const {
-  std::string result = "";
-
-  // TODO: handle whitespace and newlines.
-  for(const auto& value : m_values)
-    result += value->to_string();
-
-  return result;
+  return m_value->to_string();
 }
 
 
@@ -74,16 +82,7 @@ operator==(const json& _rhs) const {
   if(size() != _rhs.size())
     return false;
 
-  // Using sorted value vectors we can ensure that each child will be in the
-  // same position as its equivalent in _rhs' value vector. If this fails
-  // then the json objects aren't equal.
-  auto this_values_copy = m_values,
-        rhs_values_copy = _rhs.m_values;
-
-  std::sort(this_values_copy.begin(), this_values_copy.end());
-  std::sort(rhs_values_copy.begin(), rhs_values_copy.end());
-
-  return this_values_copy == rhs_values_copy;
+  return m_value == _rhs.m_value;
 }
 
 
@@ -94,19 +93,23 @@ operator!=(const json& _rhs) const {
 }
 
 
+/*
 json&
 json::
 operator+=(const json& _rhs) {
-  add_values(_rhs.m_values);
+  add_values(_rhs.m_value);
   return *this;
 }
+*/
 
 
-json
+/*
+json&
 operator+(json _lhs, const json& _rhs) {
   _lhs += _rhs;
   return _lhs;
 }
+*/
 
 
 void
@@ -115,21 +118,6 @@ parse(const std::string& _string) {
   const auto p = new parser(m_debug);
   p->parse(_string, this);
   delete p;
-}
-
-
-void
-json::
-add_value(const std::shared_ptr<value>& _value) {
-  m_values.push_back(_value);
-}
-
-
-void
-json::
-add_values(const std::vector<std::shared_ptr<value>>& _values) {
-  m_values.insert(m_values.end(), _values.begin(),
-      _values.end());
 }
 
 
@@ -146,9 +134,7 @@ write(const std::string& _path) const {
   auto ofs =
     json_base::open_json_file(_path, std::fstream::out | std::fstream::trunc);
 
-  // TODO: handle whitespace and newlines.
-  for(const auto& value : m_values)
-    ofs << value->to_string();
+  ofs << m_value->to_string();
 }
 
 

@@ -28,14 +28,16 @@ class json final : public json_base {
 
     ~json() {}
 
-    // Getters.
+    // Getters and setters.
 
     // Returns m_values.size().
     const std::size_t size() const override;
 
-    const std::vector<std::shared_ptr<value>>& get_values() const;
-
     const std::string& get_path() const;
+    void set_path(const std::string& _path);
+
+    const std::shared_ptr<value>& get_value() const;
+    void set_value(const std::shared_ptr<value>& _value);
 
     // Operator overloads.
 
@@ -49,7 +51,7 @@ class json final : public json_base {
 
     // TODO: check if we need different forms of this function.
     //       Also, it might be good to be able to add json to a string.
-    friend json operator+(json _lhs, const json& _rhs);
+    friend json& operator+(json _lhs, const json& _rhs);
 
     // Member functions.
 
@@ -58,9 +60,6 @@ class json final : public json_base {
     // Parse a json string.
     // Called by json::json(string, bool) constructor.
     void parse(const std::string& _string) override;
-
-    void add_value(const std::shared_ptr<value>& _value);
-    void add_values(const std::vector<std::shared_ptr<value>>& _values);
 
     // Writes the json object to m_path or _path if provided.
     // Note: this erases the contents of _path if the file exists.
@@ -71,8 +70,8 @@ class json final : public json_base {
 
     std::string m_path{""};
 
-    // The json objects at the highest level in the .json file.
-    std::vector<std::shared_ptr<value>> m_values;
+    // The json element at the highest level.
+    std::shared_ptr<value> m_value;
 
 };
 
