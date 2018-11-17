@@ -30,16 +30,16 @@ class json final : public json_base {
 
     // Getters.
 
-    // Returns m_children.size().
+    // Returns m_values.size().
     const std::size_t size() const override;
 
-    const std::vector<value*>& get_children() const;
+    const std::vector<std::shared_ptr<value>>& get_values() const;
 
     const std::string& get_path() const;
 
     // Operator overloads.
 
-    // True if this contains exactly the same children as _rhs.
+    // True if this contains exactly the same values as _rhs.
     // TODO: determine if this is what we really want.
     bool operator==(const json& _rhs) const;
 
@@ -59,9 +59,8 @@ class json final : public json_base {
     // Called by json::json(string, bool) constructor.
     void parse(const std::string& _string) override;
 
-    void add_child(value* _child);
-    void add_children(const std::vector<value*>&
-        _children);
+    void add_value(const std::shared_ptr<value>& _value);
+    void add_values(const std::vector<std::shared_ptr<value>>& _values);
 
     // Writes the json object to m_path or _path if provided.
     // Note: this erases the contents of _path if the file exists.
@@ -73,7 +72,7 @@ class json final : public json_base {
     std::string m_path{""};
 
     // The json objects at the highest level in the .json file.
-    std::vector<value*> m_children;
+    std::vector<std::shared_ptr<value>> m_values;
 
 };
 

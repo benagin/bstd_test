@@ -28,7 +28,7 @@ json&
 json::
 operator=(json _rhs) {
   std::swap(m_path, _rhs.m_path);
-  std::swap(m_children, _rhs.m_children);
+  std::swap(m_values, _rhs.m_values);
 
   return *this;
 }
@@ -37,14 +37,14 @@ operator=(json _rhs) {
 const std::size_t
 json::
 size() const {
-  return m_children.size();
+  return m_values.size();
 }
 
 
-const std::vector<value*>&
+const std::vector<std::shared_ptr<value>>&
 json::
-get_children() const {
-  return m_children;
+get_values() const {
+  return m_values;
 }
 
 
@@ -61,8 +61,8 @@ to_string() const {
   std::string result = "";
 
   // TODO: handle whitespace and newlines.
-  for(auto child : m_children)
-    result += child->to_string();
+  for(const auto& value : m_values)
+    result += value->to_string();
 
   return result;
 }
@@ -74,16 +74,16 @@ operator==(const json& _rhs) const {
   if(size() != _rhs.size())
     return false;
 
-  // Using sorted children vectors we can ensure that each child will be in the
-  // same position as its equivalent in _rhs's children vector. If this fails
+  // Using sorted value vectors we can ensure that each child will be in the
+  // same position as its equivalent in _rhs' value vector. If this fails
   // then the json objects aren't equal.
-  auto this_children_copy = m_children,
-        rhs_children_copy = _rhs.m_children;
+  auto this_values_copy = m_values,
+        rhs_values_copy = _rhs.m_values;
 
-  std::sort(this_children_copy.begin(), this_children_copy.end());
-  std::sort(rhs_children_copy.begin(), rhs_children_copy.end());
+  std::sort(this_values_copy.begin(), this_values_copy.end());
+  std::sort(rhs_values_copy.begin(), rhs_values_copy.end());
 
-  return this_children_copy == rhs_children_copy;
+  return this_values_copy == rhs_values_copy;
 }
 
 
@@ -97,7 +97,7 @@ operator!=(const json& _rhs) const {
 json&
 json::
 operator+=(const json& _rhs) {
-  add_children(_rhs.get_children());
+  add_values(_rhs.m_values);
   return *this;
 }
 
@@ -120,16 +120,16 @@ parse(const std::string& _string) {
 
 void
 json::
-add_children(const std::vector<value*>& _children) {
-  m_children.insert(m_children.cend(), _children.cbegin(),
-      _children.cend());
+add_value(const std::shared_ptr<value>& _value) {
+  m_values.push_back(_value);
 }
 
 
 void
 json::
-add_child(value* _child) {
-  m_children.push_back(_child);
+add_values(const std::vector<std::shared_ptr<value>>& _values) {
+  m_values.insert(m_values.end(), _values.begin(),
+      _values.end());
 }
 
 
@@ -147,8 +147,8 @@ write(const std::string& _path) const {
     json_base::open_json_file(_path, std::fstream::out | std::fstream::trunc);
 
   // TODO: handle whitespace and newlines.
-  for(const auto& child : m_children)
-    ofs << child->to_string();
+  for(const auto& value : m_values)
+    ofs << value->to_string();
 }
 
 
