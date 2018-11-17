@@ -30,7 +30,7 @@ json_assignment_operator() const {
 
   // Check member variables.
   const bool success = copy.get_path() == m_json1.get_path()
-      && copy.get_values() == m_json1.get_values();
+      && copy.get_value() == m_json1.get_value();
 
   return bstd::test::result(success, "json assignment failed");
 }
