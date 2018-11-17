@@ -16,7 +16,7 @@ class test_json final : public bstd::test::test {
     const bstd::test::result json_assignment_operator() const;
     const bstd::test::result json_equal_operator() const;
     const bstd::test::result json_addition_operator() const;
-
+    const bstd::test::result json_string_addition() const;
 
   private:
 
@@ -24,7 +24,7 @@ class test_json final : public bstd::test::test {
     std::string m_json_string2{"{ \"name2\": \"value2\" }"};
 
     bstd::json::json m_empty_json{""};
-    bstd::json::json m_one_child{"{}"};
+    bstd::json::json m_one_value{"{}"};
     bstd::json::json m_json1{m_json_string1};
     bstd::json::json m_json1_copy{m_json_string1};
     bstd::json::json m_json2{m_json_string2};
