@@ -4,5 +4,6 @@
 // Contains all public header files within the json tool.
 
 #include "../../src/json/json.hpp"
+#include "../../src/json/structures/object.hpp"
 
 #endif
