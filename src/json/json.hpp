@@ -1,7 +1,7 @@
 #ifndef BSTD_JSON_HPP_
 #define BSTD_JSON_HPP_
 
-#include "structures/json_base.hpp"
+#include "json_base.hpp"
 #include "structures/value.hpp"
 #include "parser/parser.hpp"
 
@@ -30,7 +30,7 @@ class json final : public json_base {
 
     // Getters and setters.
 
-    // Returns m_values.size().
+    // Returns m_value.size().
     const std::size_t size() const override;
 
     const std::string& get_path() const;
@@ -42,20 +42,21 @@ class json final : public json_base {
     // Operator overloads.
 
     // True if this contains exactly the same values as _rhs.
-    // TODO: determine if this is what we really want.
     bool operator==(const json& _rhs) const;
 
     bool operator!=(const json& _rhs) const;
 
     json& operator+=(const json& _rhs);
 
-    // TODO: check if we need different forms of this function.
-    //       Also, it might be good to be able to add json to a string.
-    friend json& operator+(json _lhs, const json& _rhs);
+    friend json operator+(json _lhs, const json& _rhs);
 
     // Member functions.
 
     const std::string to_string() const override;
+
+    // Adds _value to m_value. The behavior depends on the type of _value.
+    const std::shared_ptr<value>&
+        add_value(const std::shared_ptr<value>& _value) override;
 
     // Parse a json string.
     // Called by json::json(string, bool) constructor.

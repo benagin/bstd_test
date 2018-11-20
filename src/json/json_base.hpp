@@ -10,6 +10,8 @@
 
 namespace bstd::json {
 
+class value;
+
 // Abstract class used as base for each json related structure.
 class json_base {
 
@@ -25,6 +27,9 @@ class json_base {
         const json_base& _json_base);
 
     virtual const std::string to_string() const = 0;
+
+    virtual const std::shared_ptr<value>&
+        add_value(const std::shared_ptr<value>& _value) = 0;
 
     virtual void parse(const std::string& _string) = 0;
 

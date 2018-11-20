@@ -2,6 +2,7 @@
 #define BSTD_JSON_OBJECT_HPP_
 
 #include <map>
+#include <memory>
 
 #include "value.hpp"
 
@@ -20,7 +21,7 @@ class object final : public value {
 
     ~object() {}
 
-    // Getters.
+    // Getters and setters.
 
     const std::size_t size() const override;
 
@@ -42,6 +43,10 @@ class object final : public value {
 
     const std::string to_string() const override;
 
+    // Add _value to m_values.
+    const std::shared_ptr<value>&
+        add_value(const std::shared_ptr<value>& _value) override;
+
     // TODO: implement.
     void parse(const std::string& _string) override {}
 
@@ -49,7 +54,7 @@ class object final : public value {
 
   private:
 
-    std::map<std::string, value*> m_values;
+    std::map<std::string, std::shared_ptr<value>> m_values;
 
 };
 
