@@ -35,7 +35,9 @@ class object final : public value {
 
     // Operator overloads.
 
-    bool operator==(const object& _rhs);
+    bool operator==(const object& _rhs) const;
+
+    bool operator!=(const object& _rhs) const;
 
     object& operator+=(const object& _rhs);
 

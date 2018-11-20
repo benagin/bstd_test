@@ -40,10 +40,17 @@ at(const std::string& _string) const {
 
 bool
 object::
-operator==(const object& _rhs) {
+operator==(const object& _rhs) const {
 
   // TODO: implement.
   return true;
+}
+
+
+bool
+object::
+operator!=(const object& _rhs) const {
+  return !(*this == _rhs);
 }
 
 
