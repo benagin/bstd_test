@@ -42,7 +42,6 @@ json_equal_operator() const {
   const bool test1 = m_json1 == m_json1_copy;
   const bool test2 = m_json1 != m_json2;
 
-
   return bstd::test::result(test1 && test2,
       "json equal operator failed");
 }
