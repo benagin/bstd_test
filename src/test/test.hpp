@@ -71,7 +71,7 @@ add_test(const std::string& _name, const result (Derived::*_method)() const) {
 // Create a test by adding it to the tool.
 // This allows the user to call ADD_TEST(test_class::test_method) instead of
 // add_test("name", &test_class::test_method);
-#define ADD_TEST(name) \
+#define ADD_TEST(name)   \
   add_test(#name, &name) \
 
 #endif
