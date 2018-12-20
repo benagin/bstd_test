@@ -41,7 +41,7 @@ INC_DIRS ?= $(PROJ_INC)
 # Compiler Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 CXX 	  = g++
-CXXFLAGS  = -std=c++17 -Wall -Werror -pedantic -fPIC
+CXXFLAGS  = -std=c++1z -Wall -Werror -pedantic -fPIC
 LDFLAGS   = -shared
 LINK      = -Lbin
 LINK_JSON = $(LINK) -lbstdjson
