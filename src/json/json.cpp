@@ -71,8 +71,8 @@ set_value(const std::shared_ptr<value>& _value) {
 
 const std::string
 json::
-to_string() const {
-  return m_value ? m_value->to_string() : "";
+to_string(const bool _include_ws) const {
+  return m_value ? m_value->to_string(_include_ws) : "";
 }
 
 
@@ -126,18 +126,8 @@ parse(const std::string& _string) {
 
 void
 json::
-write() const {
-  write(m_path);
-}
-
-
-void
-json::
-write(const std::string& _path) const {
-  auto ofs =
-    json_base::open_json_file(_path, std::fstream::out | std::fstream::trunc);
-
-    ofs << to_string();
+write(const bool _include_ws) const {
+    json_base::write(m_path, _include_ws);
 }
 
 

@@ -52,7 +52,7 @@ class json final : public json_base {
 
     // Member functions.
 
-    const std::string to_string() const override;
+    const std::string to_string(const bool _include_ws = true) const override;
 
     // Adds _value to m_value. The behavior depends on the type of _value.
     const std::shared_ptr<value>&
@@ -62,10 +62,11 @@ class json final : public json_base {
     // Called by json::json(string, bool) constructor.
     void parse(const std::string& _string) override;
 
-    // Writes the json object to m_path or _path if provided.
-    // Note: this erases the contents of _path if the file exists.
-    void write() const;
-    void write(const std::string& _path) const override;
+    using json_base::write;
+
+    // Writes the json object to m_path.
+    // Note: this erases the contents of m_path if the file exists.
+    void write(const bool _include_ws = true) const;
 
   private:
 

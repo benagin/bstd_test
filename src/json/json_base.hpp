@@ -23,17 +23,21 @@ class json_base {
 
     virtual const std::size_t size() const = 0;
 
+    // This calls to_string() which includes whitespace by default.
+    // If you do not want whitespace use
+    // std::cout << derived.to_string(false);
     friend std::ostream& operator<<(std::ostream& _os,
         const json_base& _json_base);
 
-    virtual const std::string to_string() const = 0;
+    virtual const std::string to_string(const bool _include_ws = true) const = 0;
 
     virtual const std::shared_ptr<value>&
         add_value(const std::shared_ptr<value>& _value) = 0;
 
     virtual void parse(const std::string& _string) = 0;
 
-    virtual void write(const std::string& _path) const = 0;
+    virtual void write(const std::string _path, const bool _include_ws = true)
+        const final;
 
   protected:
 

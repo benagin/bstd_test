@@ -14,6 +14,16 @@ operator<<(std::ostream& _os, const json_base& _json_base) {
 }
 
 
+void
+json_base::
+write(const std::string _path, const bool _include_ws) const {
+  auto ofs =
+    open_json_file(_path, std::fstream::out | std::fstream::trunc);
+
+    ofs << to_string(_include_ws);
+}
+
+
 std::fstream
 json_base::
 open_json_file(const std::string& _path, std::ios_base::openmode _mode) const {
