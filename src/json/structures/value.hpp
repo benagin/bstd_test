@@ -30,14 +30,12 @@ class value : public json_base {
 
     // Member functions.
 
-    virtual const std::string to_string() const = 0;
+    virtual const std::string to_string(const bool _include_ws = true) const = 0;
 
     virtual const std::shared_ptr<value>&
         add_value(const std::shared_ptr<value>& _value) = 0;
 
     virtual void parse(const std::string& _string) = 0;
-
-    virtual void write(const std::string& _path) const = 0;
 
   protected:
 

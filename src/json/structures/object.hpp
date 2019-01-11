@@ -43,7 +43,7 @@ class object final : public value {
 
     // Member functions.
 
-    const std::string to_string() const override;
+    const std::string to_string(const bool _include_ws = true) const override;
 
     // Add _value to m_values.
     const std::shared_ptr<value>&
@@ -51,8 +51,6 @@ class object final : public value {
 
     // TODO: implement.
     void parse(const std::string& _string) override {}
-
-    void write(const std::string& _path) const override;
 
   private:
 

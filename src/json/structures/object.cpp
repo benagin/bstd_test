@@ -64,11 +64,12 @@ operator+=(const object& _rhs) {
 
 const std::string
 object::
-to_string() const {
+to_string(const bool _include_ws) const {
+  // TODO: use _include_ws.
   std::string result = "";
 
   for(const auto& value : m_values)
-    result += value.second->to_string();
+    result += value.second->to_string(_include_ws);
 
   return result;
 }
@@ -84,18 +85,6 @@ add_value(const std::shared_ptr<value>& _value) {
 
   m_values.insert(std::make_pair(_value->get_name(), _value));
   return _value;
-}
-
-
-void
-object::
-write(const std::string& _path) const {
-  auto ofs =
-    json_base::open_json_file(_path, std::fstream::out | std::fstream::trunc);
-
-  for(const auto& value : m_values)
-    ofs << value.second->to_string();
-  // TODO: check file size before or after writing.
 }
 
 
