@@ -49,9 +49,6 @@ class object final : public value {
     const std::shared_ptr<value>&
         add_value(const std::shared_ptr<value>& _value) override;
 
-    // TODO: implement.
-    void parse(const std::string& _string) override {}
-
   private:
 
     // Objects might have whitepsace between their curly brackets instead of

@@ -16,6 +16,15 @@ operator<<(std::ostream& _os, const json_base& _json_base) {
 
 void
 json_base::
+parse(const std::string& _string) {
+  const auto p = new parser(m_debug);
+  add_value(p->parse(_string));
+  delete p;
+}
+
+
+void
+json_base::
 write(const std::string _path, const bool _include_ws) const {
   auto ofs =
     open_json_file(_path, std::fstream::out | std::fstream::trunc);

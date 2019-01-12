@@ -3,7 +3,6 @@
 
 #include "json_base.hpp"
 #include "structures/value.hpp"
-#include "parser/parser.hpp"
 
 namespace bstd::json {
 
@@ -17,7 +16,7 @@ class json final : public json_base {
 
   public:
 
-    // Empty json object. Populate with a call to json::parse(string).
+    // Empty json object. Populate with a call to json_base::parse(string).
     json(const bool _debug = false) : json_base(_debug) {}
 
     // Construct from a JSON string.
@@ -57,10 +56,6 @@ class json final : public json_base {
     // Adds _value to m_value. The behavior depends on the type of _value.
     const std::shared_ptr<value>&
         add_value(const std::shared_ptr<value>& _value) override;
-
-    // Parse a json string.
-    // Called by json::json(string, bool) constructor.
-    void parse(const std::string& _string) override;
 
     using json_base::write;
 

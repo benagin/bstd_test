@@ -4,10 +4,11 @@
 namespace bstd::json {
 
 
-void
+std::shared_ptr<value>
 parser::
-parse(const std::string& _string, const json* _json) const {
+parse(const std::string& _string) const {
 
+  return nullptr;
 }
 
 

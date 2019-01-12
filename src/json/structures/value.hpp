@@ -34,8 +34,6 @@ class value : public json_base {
     virtual const std::shared_ptr<value>&
         add_value(const std::shared_ptr<value>& _value) = 0;
 
-    virtual void parse(const std::string& _string) = 0;
-
   protected:
 
     bool m_debug{false};

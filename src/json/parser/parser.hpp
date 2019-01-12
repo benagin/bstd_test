@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <sstream>
 
@@ -10,9 +11,9 @@
 
 namespace bstd::json {
 
-class json;
+class value;
 
-// Parse JSON.
+// Parse JSON according to its grammar (https://www.json.org/).
 class parser {
 
   public:
@@ -21,8 +22,8 @@ class parser {
 
     ~parser() {}
 
-    // Parse a JSON string and store the results in _json.
-    void parse(const std::string& _string, const json* _json) const;
+    // Parse a JSON string and return the result as a value (member or element).
+    std::shared_ptr<value> parse(const std::string& _string) const;
 
   protected:
 

@@ -117,15 +117,6 @@ add_value(const std::shared_ptr<value>& _value) {
 
 void
 json::
-parse(const std::string& _string) {
-  const auto p = new parser(m_debug);
-  p->parse(_string, this);
-  delete p;
-}
-
-
-void
-json::
 write(const bool _include_ws) const {
     json_base::write(m_path, _include_ws);
 }
