@@ -6,4 +6,10 @@ int main() {
   std::cout << *j << std::endl;
 
   delete j;
+
+  const auto o = new bstd::json::object("{ \"test\": \"test\" }");
+
+  std::cout << *o << std::endl;
+
+  delete o;
 }

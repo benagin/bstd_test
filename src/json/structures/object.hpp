@@ -1,8 +1,8 @@
 #ifndef BSTD_JSON_OBJECT_HPP_
 #define BSTD_JSON_OBJECT_HPP_
 
-#include <map>
-#include <memory>
+#include <algorithm>
+#include <vector>
 
 #include "value.hpp"
 
@@ -54,7 +54,14 @@ class object final : public value {
 
   private:
 
-    std::map<std::string, std::shared_ptr<value>> m_values;
+    // Objects might have whitepsace between their curly brackets instead of
+    // members. This is 'ws' in the grammar for object:
+    // object
+    //  '{' ws '}'
+    //  '{' members '}'
+    std::string m_ws{""};
+
+    std::vector<std::shared_ptr<value>> m_values;
 
 };
 
