@@ -2,6 +2,7 @@
 #define BSTD_JSON_HPP_
 
 #include "json_base.hpp"
+#include "parser/parser.hpp"
 #include "structures/value.hpp"
 
 namespace bstd::json {
@@ -16,12 +17,8 @@ class json final : public json_base {
 
   public:
 
-    // Empty json object. Populate with a call to json_base::parse(string).
+    // Empty json object.
     json(const bool _debug = false) : json_base(_debug) {}
-
-    // Construct from a JSON string.
-    // This begins the parsing process.
-    json(const std::string& _string, const bool _debug = false);
 
     json& operator=(json _rhs);
 

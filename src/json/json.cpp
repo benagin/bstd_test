@@ -2,27 +2,6 @@
 
 namespace bstd::json {
 
-json::
-json(const std::string& _string, const bool _debug) : json(_debug) {
-  auto json_string = _string;
-
-  try {
-    // Try to open string as a path.
-    auto ifs = json_base::open_json_file(_string, std::fstream::in);
-
-    json_string = std::string((std::istreambuf_iterator<char>(ifs)),
-        std::istreambuf_iterator<char>());
-  }
-  catch(bstd::error::error& _e) {
-    if(m_debug)
-      std::cout <<
-        "Couldn't open _string as file. Attempting to parse as a JSON string."
-        << std::endl;
-  }
-
-  parse(json_string);
-}
-
 
 json&
 json::

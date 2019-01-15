@@ -15,10 +15,6 @@ class object final : public value {
 
     object(const bool _debug = false) : value(_debug) {}
 
-    // TODO: implement.
-    object(const std::string& _string, const bool _debug = false)
-        : object(_debug) {}
-
     ~object() {}
 
     // Getters and setters.

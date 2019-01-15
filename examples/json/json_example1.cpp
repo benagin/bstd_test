@@ -1,15 +1,11 @@
 #include <bstd_json.hpp>
 
 int main() {
-  const auto j = new bstd::json::json("");
+  const auto j = bstd::json::parse("");
 
   std::cout << *j << std::endl;
 
-  delete j;
-
-  const auto o = new bstd::json::object("{ \"test\": \"test\" }");
+  const auto o = bstd::json::parse("{ \"test\": \"test\" }");
 
   std::cout << *o << std::endl;
-
-  delete o;
 }

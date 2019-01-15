@@ -9,7 +9,7 @@
 
 #include <bstd_error.hpp>
 
-#include "parser/parser.hpp"
+#include "utilities/json_file_util.hpp"
 
 namespace bstd::json {
 
@@ -37,17 +37,10 @@ class json_base {
     virtual const std::shared_ptr<value>&
         add_value(const std::shared_ptr<value>& _value) = 0;
 
-    virtual void parse(const std::string& _string) final;
-
     virtual void write(const std::string _path, const bool _include_ws = true)
         const final;
 
   protected:
-
-    virtual std::fstream open_json_file(const std::string& _path,
-        std::ios_base::openmode _mode) const final;
-
-    virtual const bool is_json_extension(const std::string& _path) const final;
 
     bool m_debug{false};
 

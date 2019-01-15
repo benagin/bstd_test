@@ -9,27 +9,16 @@
 
 #include <bstd_error.hpp>
 
-namespace bstd::json {
-
-class value;
+#include "json.hpp"
+#include "structures/object.hpp"
+#include "utilities/json_file_util.hpp"
 
 // Parse JSON according to its grammar (https://www.json.org/).
-class parser {
+namespace bstd::json {
 
-  public:
-
-    parser(const bool _debug = false) : m_debug(_debug) {}
-
-    ~parser() {}
-
-    // Parse a JSON string and return the result as a value (member or element).
-    std::shared_ptr<value> parse(const std::string& _string) const;
-
-  protected:
-
-    bool m_debug{false};
-
-};
+    // Parse a .json file or a JSON string and return the result as a json
+    // object. The type of object depends on the contents of the file or string.
+    std::shared_ptr<json_base> parse(const std::string& _string);
 
 }
 
