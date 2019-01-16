@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <string_view>
 
 #include <bstd_error.hpp>
 
@@ -11,7 +12,7 @@ namespace bstd::json::utilities {
 std::fstream open_json_file(const std::string& _path,
     std::ios_base::openmode _mode);
 
-const bool is_json_extension(const std::string& _path);
+const bool is_json_extension(const std::string_view& _path);
 
 }
 

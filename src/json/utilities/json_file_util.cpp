@@ -20,16 +20,8 @@ open_json_file(const std::string& _path, std::ios_base::openmode _mode) {
 }
 
 const bool
-is_json_extension(const std::string& _path) {
-  constexpr std::string_view dot_json{".json"};
-
-  if(_path.size() < dot_json.size())
-    return false;
-
-  const auto extension =
-    _path.substr(_path.size() - dot_json.length());
-
-  return extension == dot_json;
+is_json_extension(const std::string_view& _path) {
+  return _path.ends_with(".json");
 }
 
 
