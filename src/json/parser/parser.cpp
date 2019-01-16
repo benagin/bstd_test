@@ -8,22 +8,15 @@ parse(const std::string& _string) {
   // Could be a .json file path or a JSON string.
   std::string_view json_string = _string;
 
-  try {
-    // Try to open string as a path.
-    auto ifs = utilities::open_json_file(_string, std::fstream::in);
-
+  // Try to open string as a path.
+  auto ifs = utilities::open_json_file(_string, std::fstream::in);
+  if(ifs.is_open())
     json_string = std::string((std::istreambuf_iterator<char>(ifs)),
         std::istreambuf_iterator<char>());
-  }
-  catch(bstd::error::error& _e) {
-    std::cout <<
-      "Couldn't open _string as file. Attempting to parse as a JSON string."
-      << std::endl;
-  }
 
   // Now we have a JSON string for sure.
 
-  const auto leading_ws = eat_leading_ws(json_string);
+  const auto& leading_ws = eat_leading_ws(json_string);
 
   if(json_string.empty())
     return std::make_shared<json>();
@@ -49,11 +42,13 @@ parse(const std::string& _string) {
   else if(json_string.starts_with('n'))
     // TODO: implement.
     return std::make_shared<object>();
-  else
-    throw bstd::error::context_error(_string,
-        _string.cbegin(),
-        "Invalid JSON value. Expected '{', '[', '\"', number, true, \
-        false, or null");
+  else {
+    std::string copy(json_string);
+    throw bstd::error::context_error(copy,
+        copy.cbegin(),
+        "Invalid JSON value. Expected '{', '[', '\"', number, true, " \
+        "false, or null");
+    }
 }
 
 
@@ -72,7 +67,7 @@ parse_array(const std::string_view _leading_ws, const std::string_view _string) 
 
 
 const std::string_view
-eat_leading_ws(std::string_view _string) {
+eat_leading_ws(std::string_view& _string) {
   for(auto& c : _string)
     if(isspace(c))
       _string.remove_prefix(1);
