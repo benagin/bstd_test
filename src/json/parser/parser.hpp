@@ -28,7 +28,7 @@ namespace bstd::json {
         const std::string_view _string);
 
     // Return and remove the leading whitespace from _string.
-    const std::string_view eat_leading_ws(std::string_view _string);
+    const std::string_view eat_leading_ws(std::string_view& _string);
 }
 
 #endif

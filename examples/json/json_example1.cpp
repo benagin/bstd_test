@@ -8,4 +8,7 @@ int main() {
   const auto o = bstd::json::parse("{ \"test\": \"test\" }");
 
   std::cout << *o << std::endl;
+
+  const auto o2 = bstd::json::parse("    a");
+
 }
