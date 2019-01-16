@@ -25,10 +25,10 @@ class context_error : public error {
     // _context Context that contains the error.
     // _csit    Iterator to the bad character.
     // _what    What went wrong.
-    explicit context_error(const std::string& _context, const CSIT& _csit,
+    explicit context_error(std::string& _context, const CSIT& _csit,
         const std::string& _what)
         : error("character '" + std::string(1, *_csit) + "' in context '" +
-          mark_char(_csit, _context, this), _what) {}
+          mark_char(_csit, _context, this) + "'", _what) {}
 
 
     // Report error for a string in a context.
@@ -37,10 +37,10 @@ class context_error : public error {
     // _start   Iterator to the start of the bad string.
     // _last    Iterator to last character of the bad string.
     // _what    What went wrong.
-    explicit context_error(const std::string& _context, const CSIT& _start,
+    explicit context_error(std::string& _context, const CSIT& _start,
         const CSIT& _last, const std::string& _what)
         : error(std::string(_start, _last) + "' in context '" +
-          mark_string(_start, _last, _context, this), _what) {}
+          mark_string(_start, _last, _context, this) + "'", _what) {}
 
   private:
 
@@ -51,14 +51,13 @@ class context_error : public error {
     // _csit    The character to mark.
     // _context The context containing the character
     // _ce      An object so this friend class works (unused).
+    //
+    // This causes undefined behavior if _csit is not valid (does not point to
+    // _context).
     friend const std::string mark_char(const CSIT& _csit,
-        const std::string& _context, const context_error* _ce) {
-      if(_context.empty())
-        throw context_error("context_error::mark_char", "Empty context string");
-
+        std::string& _context, const context_error* _ce) {
       return mark_string(_csit, _csit, _context, _ce);
     }
-
 
     // Same as above, but marks a string.
     //
@@ -66,12 +65,15 @@ class context_error : public error {
     // _last    Iterator to the last character of the string.
     // _context The context that contains the string.
     // _ce      An object so this friend class works (unused).
+    //
+    // This causes undefined behavior if _start and _last are not valid (do not
+    // point to _context).
     friend const std::string mark_string(const CSIT& _start, const CSIT& _last,
-        const std::string& _context, const context_error* _ce){
-      auto error = trim(_context, _ce);
+        std::string& _context, const context_error* _ce){
+      auto& error = trim(_context, _ce);
 
-      auto start = error.begin() + std::distance(error.cbegin(), _start),
-           end = error.begin() + std::distance(error.cbegin(), _last);
+      const auto& start = error.cbegin() + std::distance(error.cbegin(), _start),
+           end = error.cbegin() + std::distance(error.cbegin(), _last);
 
       error.insert(start, {' ', '{'});
       error.insert(end + 3, {'}', ' '});
@@ -83,7 +85,7 @@ class context_error : public error {
     //
     // _context The context string.
     // _ce      An object so this friend class works (unused).
-    friend std::string trim(const std::string& _context,
+    friend std::string& trim(std::string& _context,
         const context_error* _ce) {
       // If the context of an error is larger than this we wil trim it to keep
       // output cleaner.
@@ -93,25 +95,22 @@ class context_error : public error {
       // before trimming from the beginning.
       constexpr size_t MAX_TRIM_SIZE = 10;
 
-      // Get a non-const copy.
-      std::string error(_context);
-
-      const auto size = error.size();
+      const auto size = _context.size();
       if(size < MAX_CONTEXT_SIZE)
-        return error;
+        return _context;
 
       const auto& size_to_trim = std::ceil((MAX_CONTEXT_SIZE - size) / 2);
 
       const std::string ellipsis = "...";
 
       // Trim from the end of the context string.
-      error = error.substr(size - size_to_trim) + ellipsis;
+      _context = _context.substr(size - size_to_trim) + ellipsis;
 
       // Trim from the beginning and end of the context.
       if(size_to_trim > MAX_TRIM_SIZE)
-        error = error.substr(0, size_to_trim).insert(0, ellipsis);
+        _context= _context.substr(0, size_to_trim).insert(0, ellipsis);
 
-      return error;
+      return _context;
     }
 
 };
