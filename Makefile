@@ -6,7 +6,6 @@ debug ?= 0
 
 BSTD  	 ?= bstd
 JSON  	 ?= json
-ERROR 	 ?= error
 TEST  	 ?= test
 EXAMPLES ?= examples
 TESTS    ?= tests
@@ -41,7 +40,7 @@ INC_DIRS ?= $(PROJ_INC)
 # Compiler Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 CXX 	  = g++
-CXXFLAGS  = -std=c++1z -Wall -Werror -pedantic -fPIC
+CXXFLAGS  = -std=c++2a -Wall -Werror -pedantic -fPIC
 LDFLAGS   = -shared
 LINK      = -Lbin
 LINK_JSON = $(LINK) -lbstdjson
@@ -58,10 +57,6 @@ DEPS = -MMD -MF $(D_FILES)
 # File Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 BSTD_LIB := $(BIN_DIR)/libbstd.so
-
-ERROR_SRCS := $(shell find $(ERROR_SRC) -path "*.cpp")
-ERROR_OBJS := $(ERROR_SRCS:.cpp=.o)
-ERROR_LIB := $(BIN_DIR)/libbstderror.so
 
 JSON_SRCS := $(shell find $(JSON_SRC) -path "*.cpp")
 JSON_OBJS := $(JSON_SRCS:.cpp=.o)
@@ -82,9 +77,9 @@ TEST_EXAMPLES     := $(basename $(TEST_EXAMPLE_SRCS))
 
 TESTS_EXEC := $(BIN_DIR)/$(TESTS)
 
-SRCS := $(JSON_SRCS) $(ERROR_SRCS) $(TEST_SRCS)
-OBJS := $(JSON_OBJS) $(ERROR_OBJS) $(TEST_OBJS)
-LIBS := $(ERROR_LIB) $(JSON_LIB) $(TEST_LIB)
+SRCS := $(JSON_SRCS) $(TEST_SRCS)
+OBJS := $(JSON_OBJS) $(TEST_OBJS)
+LIBS := $(JSON_LIB) $(TEST_LIB)
 
 # Object File Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -114,14 +109,6 @@ $(JSON_LIB):	$(JSON_OBJS)
 		@echo Linking $@...
 		@$(CXX) $(LDFLAGS) -o $@ $^
 		@rm -f $(JSON_OBJS)
-
-# Build bstd::error library.
-.PHONY: $(ERROR)
-$(ERROR):	$(ERROR_LIB)
-$(ERROR_LIB):	$(ERROR_OBJS)
-		@echo Linking $@...
-		@$(CXX) $(LDFLAGS) -o $@ $^
-		@rm -f $(ERROR_OBJS)
 
 # Build bstd::test library.
 .PHONY: $(TEST)

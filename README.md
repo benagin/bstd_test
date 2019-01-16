@@ -13,7 +13,7 @@ A library of tools for use in my other projects.
 ##### Available build targets
 1. Build everything: ```make``` or ```make all```
 2. Build all tools (excludes tests): ```make bstd```
-2. Build a single tool: ```make error```, ```make json```, or ```make test```
+2. Build a single tool: ```make json```, or ```make test```
 3. Build examples: ```make examples```
 4. Build tests: ```make tests```
 

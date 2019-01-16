@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "./error.hpp"
+#include "error.hpp"
 
 namespace bstd::error {
 
@@ -13,7 +13,7 @@ namespace bstd::error {
 // of the error within a string.
 class context_error : public error {
 
-  typedef std::string::const_iterator SIT;
+  typedef std::string::const_iterator CSIT;
 
   public:
 
@@ -23,12 +23,13 @@ class context_error : public error {
     // Report error for a character in a context.
     //
     // _context Context that contains the error.
-    // _sit     Iterator to the bad character.
+    // _csit    Iterator to the bad character.
     // _what    What went wrong.
-    explicit context_error(const std::string& _context, const SIT& _sit,
+    explicit context_error(const std::string& _context, const CSIT& _csit,
         const std::string& _what)
-        : error("character '" + std::string(1, *_sit) + "' in context '" +
-          mark_char(_sit, _context), _what) {}
+        : error("character '" + std::string(1, *_csit) + "' in context '" +
+          mark_char(_csit, _context, this), _what) {}
+
 
     // Report error for a string in a context.
     //
@@ -36,10 +37,10 @@ class context_error : public error {
     // _start   Iterator to the start of the bad string.
     // _last    Iterator to last character of the bad string.
     // _what    What went wrong.
-    explicit context_error(const std::string& _context, const SIT& _start,
-        const SIT& _last, const std::string& _what)
+    explicit context_error(const std::string& _context, const CSIT& _start,
+        const CSIT& _last, const std::string& _what)
         : error(std::string(_start, _last) + "' in context '" +
-          mark_string(_start, _last, _context), _what) {}
+          mark_string(_start, _last, _context, this), _what) {}
 
   private:
 
@@ -47,25 +48,74 @@ class context_error : public error {
     // Example: 'This string has a bad<d> character.'
     // Only return ample context for the character.
     //
-    // _sit     The character to mark.
+    // _csit    The character to mark.
     // _context The context containing the character
-    const std::string mark_char(const SIT& _sit,
-        const std::string& _context) const;
+    // _ce      An object so this friend class works (unused).
+    friend const std::string mark_char(const CSIT& _csit,
+        const std::string& _context, const context_error* _ce) {
+      if(_context.empty())
+        throw context_error("context_error::mark_char", "Empty context string");
+
+      return mark_string(_csit, _csit, _context, _ce);
+    }
+
 
     // Same as above, but marks a string.
     //
     // _start   Iterator to the start of the string.
     // _last    Iterator to the last character of the string.
     // _context The context that contains the string.
-    const std::string mark_string(const SIT& _start, const SIT& _last,
-        const std::string& _context) const;
+    // _ce      An object so this friend class works (unused).
+    friend const std::string mark_string(const CSIT& _start, const CSIT& _last,
+        const std::string& _context, const context_error* _ce){
+      auto error = trim(_context, _ce);
+
+      auto start = error.begin() + std::distance(error.cbegin(), _start),
+           end = error.begin() + std::distance(error.cbegin(), _last);
+
+      error.insert(start, {' ', '{'});
+      error.insert(end + 3, {'}', ' '});
+
+      return error;
+    }
 
     // Trim context to keep it under MAX_CONTEXT_SIZE.
     //
     // _context The context string.
-    std::string trim(const std::string& _context) const;
+    // _ce      An object so this friend class works (unused).
+    friend std::string trim(const std::string& _context,
+        const context_error* _ce) {
+      // If the context of an error is larger than this we wil trim it to keep
+      // output cleaner.
+      constexpr size_t MAX_CONTEXT_SIZE = 30;
+
+      // The max amount of characters we will trim from the end of the context
+      // before trimming from the beginning.
+      constexpr size_t MAX_TRIM_SIZE = 10;
+
+      // Get a non-const copy.
+      std::string error(_context);
+
+      const auto size = error.size();
+      if(size < MAX_CONTEXT_SIZE)
+        return error;
+
+      const auto& size_to_trim = std::ceil((MAX_CONTEXT_SIZE - size) / 2);
+
+      const std::string ellipsis = "...";
+
+      // Trim from the end of the context string.
+      error = error.substr(size - size_to_trim) + ellipsis;
+
+      // Trim from the beginning and end of the context.
+      if(size_to_trim > MAX_TRIM_SIZE)
+        error = error.substr(0, size_to_trim).insert(0, ellipsis);
+
+      return error;
+    }
 
 };
+
 }
 
 #endif

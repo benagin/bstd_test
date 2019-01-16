@@ -16,6 +16,7 @@ class error : public std::runtime_error {
           + _what + ".\n") {}
 
 };
+
 }
 
 #endif
