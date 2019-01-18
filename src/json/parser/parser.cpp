@@ -3,7 +3,7 @@
 namespace bstd::json {
 
 
-std::shared_ptr<json_base>
+std::shared_ptr<json>
 parse(const std::string& _string) {
   // Could be a .json file path or a JSON string.
   std::string_view json_string = _string;
@@ -16,39 +16,42 @@ parse(const std::string& _string) {
 
   // Now we have a JSON string for sure.
 
-  const auto& leading_ws = eat_leading_ws(json_string);
+  const auto& leading_ws = trim_leading_ws(json_string);
+
+  auto result = std::make_shared<json>();
 
   if(json_string.empty())
-    return std::make_shared<json>();
+    return result;
 
   // Check first non-whitespace character to determine the type of value we
   // have.
   if(json_string.starts_with('{'))
-    return parse_object(leading_ws, json_string);
+    result->add_value(parse_object(leading_ws, json_string));
   else if(json_string.starts_with('['))
-    return parse_array(leading_ws, json_string);
+    result->add_value(parse_array(leading_ws, json_string));
   else if(json_string.starts_with('\"'))
     // TODO: implement.
-    return std::make_shared<object>();
+    return result;
   else if(isdigit(json_string.front()))
     // TODO: implement.
-    return std::make_shared<object>();
-  else if(json_string.starts_with('t'))
+    return result;
+  else if(json_string.starts_with("true"))
     // TODO: implement.
-    return std::make_shared<object>();
-  else if(json_string.starts_with('f'))
+    return result;
+  else if(json_string.starts_with("false"))
     // TODO: implement.
-    return std::make_shared<object>();
-  else if(json_string.starts_with('n'))
+    return result;
+  else if(json_string.starts_with("null"))
     // TODO: implement.
-    return std::make_shared<object>();
+    return result;
   else {
     std::string copy(json_string);
-    throw bstd::error::context_error(copy,
-        copy.cbegin(),
-        "Invalid JSON value. Expected '{', '[', '\"', number, true, " \
+    throw bstd::error::context_error(copy, copy.cbegin(),
+        "Invalid JSON value. Expected '{', '[', '\"', a number, true, " \
         "false, or null");
-    }
+  }
+
+  return result;
 }
 
 
@@ -67,12 +70,27 @@ parse_array(const std::string_view _leading_ws, const std::string_view _string) 
 
 
 const std::string_view
-eat_leading_ws(std::string_view& _string) {
-  for(auto& c : _string)
-    if(isspace(c))
-      _string.remove_prefix(1);
+trim_leading_ws(std::string_view& _string) {
+  // Whitespace characters supported by JSON.
+  // See grammar (www.json.org) for ws.
+  constexpr std::string_view ws = " \t\n\r";
 
-  return _string;
+  const auto index = _string.find_first_not_of(ws);
+
+  // Case where there is no whitespace.
+  if(index == 0) {
+    return "";
+  }
+
+  // Case where the whole string is whitespace.
+  if(index == _string.npos) {
+    _string = "";
+    return _string;
+  }
+
+  _string.remove_prefix(index);
+
+  return _string.substr(0, index);
 }
 
 
