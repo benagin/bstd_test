@@ -5,6 +5,5 @@
 
 #include "../../src/json/json.hpp"
 #include "../../src/json/parser/parser.hpp"
-#include "../../src/json/structures/object.hpp"
 
 #endif
