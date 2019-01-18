@@ -25,6 +25,7 @@ class context_error : public error {
     // _context Context that contains the error.
     // _csit    Iterator to the bad character.
     // _what    What went wrong.
+    // TODO: figure out a way to do this without modifying _context.
     explicit context_error(std::string& _context, const CSIT& _csit,
         const std::string& _what)
         : error("character '" + std::string(1, *_csit) + "' in context '" +
