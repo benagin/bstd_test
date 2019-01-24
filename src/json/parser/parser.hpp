@@ -23,14 +23,14 @@ class json;
 // object. The type of object depends on the contents of the file or string.
 std::shared_ptr<json> parse(const std::string& _string);
 
-std::shared_ptr<object> parse_object(const std::string_view _leading_ws,
-    const std::string_view _string);
+std::shared_ptr<object> parse_object(const std::string _leading_ws,
+    const std::string _string);
 
-std::shared_ptr<array> parse_array(const std::string_view _leading_ws,
-    const std::string_view _string);
+std::shared_ptr<array> parse_array(const std::string _leading_ws,
+    const std::string _string);
 
 // Remove and return the leading whitespace from _string.
-const std::string_view trim_leading_ws(std::string_view& _string);
+const std::string trim_leading_ws(std::string& _string);
 
 }
 
