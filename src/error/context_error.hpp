@@ -71,22 +71,22 @@ class context_error : public error {
     // point to _context).
     friend const std::string mark_string(const CSIT& _start, const CSIT& _last,
         std::string& _context, const context_error* _ce){
-      auto& error = trim(_context, _ce);
+      const auto& start = _context.cbegin() +
+                          std::distance(_context.cbegin(), _start),
+                  end = _context.cbegin() +
+                        std::distance(_context.cbegin(), _last);
 
-      const auto& start = error.cbegin() + std::distance(error.cbegin(), _start),
-           end = error.cbegin() + std::distance(error.cbegin(), _last);
+      _context.insert(start, {' ', '{'});
+      _context.insert(end + 3, {'}', ' '});
 
-      error.insert(start, {' ', '{'});
-      error.insert(end + 3, {'}', ' '});
-
-      return error;
+      return trim(_context, _ce);
     }
 
     // Trim context to keep it under MAX_CONTEXT_SIZE.
     //
     // _context The context string.
     // _ce      An object so this friend class works (unused).
-    friend std::string& trim(std::string& _context,
+    friend std::string trim(std::string _context,
         const context_error* _ce) {
       // If the context of an error is larger than this we wil trim it to keep
       // output cleaner.
@@ -100,18 +100,23 @@ class context_error : public error {
       if(size < MAX_CONTEXT_SIZE)
         return _context;
 
-      const auto& size_to_trim = std::ceil((MAX_CONTEXT_SIZE - size) / 2);
+      const auto& size_to_trim = std::ceil((size - MAX_CONTEXT_SIZE) / 2);
 
       const std::string ellipsis = "...";
 
-      // Trim from the end of the context string.
-      _context = _context.substr(size - size_to_trim) + ellipsis;
+      std::string trimmed = "";
 
-      // Trim from the beginning and end of the context.
-      if(size_to_trim > MAX_TRIM_SIZE)
-        _context= _context.substr(0, size_to_trim).insert(0, ellipsis);
+      // Trim from front and back.
+      if(size_to_trim > MAX_TRIM_SIZE) {
+        trimmed = _context.substr(size_to_trim, size - (size_to_trim * 2));
+        trimmed = ellipsis + trimmed + ellipsis;
+      } else {
+        // Trim from the back only.
+        trimmed = _context.substr(0, size - (size_to_trim * 2));
+        trimmed = trimmed + ellipsis;
+      }
 
-      return _context;
+      return trimmed;
     }
 
 };
