@@ -10,8 +10,6 @@ class test_json final : public bstd::test::test {
 
     test_json();
 
-    ~test_json() {}
-
     const bstd::test::result json_size() const;
     const bstd::test::result json_assignment_operator() const;
     const bstd::test::result json_equal_operator() const;

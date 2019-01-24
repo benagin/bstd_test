@@ -1,9 +1,0 @@
-{
-  "string_value": "value",
-  "number_value": 100,
-  "object_value": { "val1": "val1" },
-  "array_value": [ "val1": "val1" ],
-  "true_value": "true",
-  "false_value": "false",
-  "null_value": "null"
-}
