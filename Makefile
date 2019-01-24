@@ -142,6 +142,7 @@ $(TEST_EXAMPLES):  %: %.cpp $(TEST_LIB)
 .PHONY: $(TESTS)
 $(TESTS):	$(JSON_TESTS)
 
+# TODO: fix not being able to run test executable from different directories.
 # Build bstd::json tests.
 .PHONY: json_tests
 json_tests:	$(JSON_TESTS)
