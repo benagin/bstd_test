@@ -3,7 +3,7 @@
 
 #include "json_base.hpp"
 #include "parser/parser.hpp"
-#include "structures/value.hpp"
+#include "structures/object.hpp"
 
 namespace bstd::json {
 
@@ -18,7 +18,8 @@ class json final : public json_base {
   public:
 
     // Empty json object.
-    json(const bool _debug = false) : json_base(_debug) {}
+    json(const bool _debug = false) : json_base(_debug),
+        m_value(std::make_shared<object>()) {}
 
     json& operator=(json _rhs);
 

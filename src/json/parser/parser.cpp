@@ -57,7 +57,6 @@ parse(const std::string& _string) {
         "false, or null");
   }
 
-  std::cout << "return" << std::endl;
   return result;
 }
 

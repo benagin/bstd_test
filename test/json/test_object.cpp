@@ -79,7 +79,9 @@ test_object::
 object_to_string() const {
   const auto object1 = bstd::json::parse(m_object_string1);
 
-  const auto test = object1->to_string() == m_object_string1;
+  const auto test = object1->to_string(true) == m_object_string1;
+  std::cout << "to_string: " << object1->to_string(true) << std::endl;
+  std::cout << "string: " << m_object_string1  << std::endl;
 
   return bstd::test::result(test, "object to string failed");
 }

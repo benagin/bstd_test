@@ -79,9 +79,15 @@ to_string(const bool _include_ws) const {
   // members.
   if(m_values.empty() and _include_ws)
     result += m_ws;
+  else if(m_values.size() == 1)
+    result += m_values.front()->to_string(_include_ws);
   else
-    for(const auto& value : m_values)
-      result += value->to_string(_include_ws) + ',';
+    for(const auto& value : m_values) {
+      result += value->to_string(_include_ws);
+
+      if(value != m_values.back())
+        result += ',';
+    }
 
   result += "}";
 
