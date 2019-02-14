@@ -37,7 +37,7 @@ my_test->add_test("test_name1", test::test1)->add_test("test_name2", test::test2
 Where ```test::testx``` are test methods that follow the signature above.
 
 Note: chaining the ```add_test(...)``` and ```run()``` calls are, of course, not required.
-Note: ```add_test(...)``` can be replaced by the ```ADD_TEST(...)``` macro as described below.
+Also, ```add_test(...)``` can be replaced by the ```ADD_TEST(...)``` macro as described below.
 
 #### Preprocessor derectives (macros)
 
