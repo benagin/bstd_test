@@ -2,6 +2,20 @@
 
 A library of tools for use in my other projects.
 
+## Tools
+
+### bstd::json
+
+Integrate JSON with C++.
+
+### bstd::error
+
+Throw more useful errors.
+
+### bstd::test
+
+Unit testing framework.
+
 ## Usage
 
 ### Clone and build
