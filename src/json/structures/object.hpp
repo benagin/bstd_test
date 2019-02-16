@@ -41,7 +41,6 @@ class object final : public value {
 
     const std::string to_string(const bool _include_ws = true) const override;
 
-    // Add _value to m_values.
     const std::shared_ptr<value>&
         add_value(const std::shared_ptr<value>& _value) override;
 
