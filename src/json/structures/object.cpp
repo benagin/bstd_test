@@ -75,17 +75,17 @@ to_string(const bool _include_ws) const {
 
   result += "{";
 
-  // The object is either empty and might have whitepsace or it contains some
-  // members.
+  // The object is either empty and might have whitepsace or it contains one or
+  // more members.
   if(m_values.empty() and _include_ws)
     result += m_ws;
   else if(m_values.size() == 1)
     result += m_values.front()->to_string(_include_ws);
   else
-    for(const auto& value : m_values) {
-      result += value->to_string(_include_ws);
+    for(int i = 0; i < m_values.size(); ++i) {
+      result += m_values.at(i)->to_string(_include_ws);
 
-      if(value != m_values.back())
+      if(i != m_values.size() - 1)
         result += ',';
     }
 
