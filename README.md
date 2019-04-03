@@ -1,53 +1,31 @@
-# bstd
-
-A library of tools for use in my other projects.
-
-## Tools
-
-### bstd::json
-
-Integrate JSON with C++.
-
-### bstd::error
+# bstd::error
 
 Throw more useful errors.
 
-### bstd::test
-
-Unit testing framework.
+This is a header only library.
 
 ## Usage
 
 ### Clone and build
 
-1. ```git clone git@github.com:benagin/bstd.git```
-2. ```cd bstd```
-3. ```make bstd```
+1. ```git clone git@github.com:benagin/bstd_error.git```
+2. ```cd bstd_error```
+3. ```make bstd_error```
 
 ##### Available build targets
 1. Build everything: ```make``` or ```make all```
-2. Build all tools (excludes tests): ```make bstd```
-2. Build a single tool: ```make json```, or ```make test```
+2. Build this tool (excludes tests): ```make bstd_error```
 3. Build examples: ```make examples```
 4. Build tests: ```make tests```
 
-More specific build commands in their relavent directories.
-
 ### Include public headers
 
-Assuming the path to `bstd` is included with ```-I<path-to-bstd>``` or something similar:
+Assuming the path to `bstd_error` is included with ```-I<path-to-bstd_error>``` or something similar:
 
-* All public headers: ```#include "bstd/include/bstd.hpp"```
-* bstd::json public headers: ```#include "bstd/include/json/bstd_json.hpp"```
-* bstd::error public headers: ```#include "bstd/include/error/bstd_error.hpp"```
-* bstd::test public headers: ```#include "bstd/include/test/bstd_test.hpp"```
+* All public headers: ```#include "bstd_error/include/bstd_error.hpp"```
 
-Alternatively, include ```bstd/include``` or ```bstd/include/<tool>``` in gcc or equivalent:
+Alternatively, include ```bstd_error/include```. In gcc or equivalent:
 * ```-Ibstd/include```
-* ```-Ibstd/include/<tool>```
 
 Then use (depending on which headers you need):
-* ```#include <bstd.hpp>```
-* ```#include <bstd_json.hpp>```
 * ```#include <bstd_error.hpp>```
-* ```#include <bstd_test.hpp>```

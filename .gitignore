@@ -9,6 +9,7 @@
 
 # After the above, files without extensions (executables) are ignored.
 
+bin/
 bin/*
 build/
 *.swp
