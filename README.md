@@ -1,29 +1,28 @@
-# bstd::error
+# bstd::test
 
-Throw more useful errors.
-
-This is a header only library.
+C++ unit testing tool.
 
 ## Usage
 
 ### Clone
 
-1. ```git clone git@github.com:benagin/bstd_error.git```
-2. ```cd bstd_error```
+1. ```git clone git@github.com:benagin/bstd_test.git```
+2. ```cd bstd_test```
+3. ```make bstd_test``
 
 ##### Available build targets
 1. Build everything: ```make``` or ```make all```
+2. Build bstd_test: ```make bstd_test```
 3. Build examples: ```make examples```
-4. Build tests: ```make tests```
 
 ### Include public headers
 
-Assuming the path to `bstd_error` is included with ```-I<path-to-bstd_error>``` or something similar:
+Assuming the path to `bstd_test` is included with ```-I<path-to-bstd_test>``` or something similar:
 
-* All public headers: ```#include "bstd_error/include/bstd_error.hpp"```
+* All public headers: ```#include "bstd_test/include/bstd_test.hpp"```
 
-Alternatively, include ```bstd_error/include```. In gcc or equivalent:
-* ```-Ibstd_error/include```
+Alternatively, include ```bstd_test/include```. In gcc or equivalent:
+* ```-Ibstd_test/include```
 
 Then use (depending on which headers you need):
-* ```#include <bstd_error.hpp>```
+* ```#include <bstd_test.hpp>```

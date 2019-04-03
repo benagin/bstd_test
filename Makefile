@@ -4,16 +4,16 @@ debug ?= 0
 
 # Component names ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-EXAMPLES ?= examples
-TESTS    ?= tests
+BSTD_TEST ?= bstd_test
+EXAMPLES  ?= examples
 
 # Directory Layout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 $(shell mkdir -p bin)
 BIN_DIR ?= ./bin
 
+SRC_DIR           ?= ./src
 EXAMPLES_SRC_DIR  ?= ./examples
-TESTS_SRC_DIR  ?= ./test
 
 $(shell mkdir -p build/dependencies)
 BUILD_DIR      ?= ./build
@@ -27,6 +27,7 @@ INC  := -Iinclude/
 
 CXX 	  = g++
 CXXFLAGS  = -std=c++2a -Wall -Werror -pedantic
+LDFLAGS   = -shared
 
 ifeq ($(debug), 1)
 	CXXFLAGS += -g
@@ -36,10 +37,13 @@ DEPS = -MMD -MF $(D_FILES)
 
 # File Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+
 EXAMPLES_SRCS := $(shell find $(EXAMPLES_SRC_DIR) -path "*.cpp")
-EXAMPLES     := $(basename $(EXAMPLES_SRCS))
-TESTS_SRCS    := $(shell find $(TESTS_SRC_DIR) -path "*.cpp")
-TESTS        := $(basename $(TESTS_SRCS))
+EXAMPLES      := $(basename $(EXAMPLES_SRCS))
+
+SRCS := $(shell find $(SRC_DIR) -path "*.cpp")
+OBJS := $(SRCS:.cpp=.o)
+LIB  := $(BIN_DIR)/libbstdtest.so
 
 # Object File Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -52,7 +56,7 @@ TESTS        := $(basename $(TESTS_SRCS))
 
 # Executable Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-all:	$(EXAMPLES) $(TESTS)
+all:	$(EXAMPLES) $(BSTD_TEST)
 
 # Build all examples.
 .PHONY: $(EXAMPLES)
@@ -61,13 +65,13 @@ $(EXAMPLES):	%: %.cpp
 		@$(CXX) $(CXXFLAGS) $(DEPS) $(INC) $< -o $@
 		@cat $(D_FILES) >> $(DEPENDENCIES)
 
-# TODO: fix not being able to run test executable from different directories.
-# Build all tests.
-.PHONY: $(TESTS)
-$(TESTS):	%: %.cpp $(TEST_LIB) $(JSON_LIB)
-		@echo Compiling $<...
-		@$(CXX) $(CXXFLAGS) $(DEPS) $(INC) $< -o $@
-		@cat $(D_FILES) >> $(DEPENDENCIES)
+# build bstd::test library.
+.PHONY: $(BSTD_TEST)
+$(BSTD_TEST):	$(LIB)
+$(LIB):		$(OBJS)
+		@echo Linking $<...
+		@$(CXX) $(LDFLAGS) -o $@ $^
+		@rm -f $(OBJS)
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -77,9 +81,10 @@ clean:
 	@echo Cleaning...
 	@rm -f $(shell find $(DEPENDENCY_DIR) -path "*.d")
 	@rm -f $(shell find . -path "*.o")
-	@rm -f $(EXAMPLES) $(TESTS)
+	@rm -f $(EXAMPLES)
 	@rm -f $(DEPENDENCIES)
-	@rm -f $(BIN_DIR)/*
+	@rm -rf $(BUILD_DIR)
+	@rm -rf $(BIN_DIR)
 
 # Other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
