@@ -1,6 +1,6 @@
 # bstd::test
 
-C++ unit testing tool.
+A library of C++ testing tools.
 
 ## Usage
 
