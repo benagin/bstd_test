@@ -3,7 +3,7 @@
 
 // Contains all public header files within the this tool.
 
-#include "../src/test.hpp"
+#include "../src/unit_tester.hpp"
 #include "../src/main.hpp"
 
 #endif

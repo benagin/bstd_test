@@ -1,11 +1,11 @@
-#include "test.hpp"
+#include "unit_tester.hpp"
 
 
-namespace bstd::test {
+namespace bstd::unit_test {
 
 
-test*
-test::
+unit_tester*
+unit_tester::
 add_test(const std::string& _name, const result (*_function)()) {
   m_tests.push_back(std::make_pair(_name, std::bind(_function)));
   return this;
@@ -13,7 +13,7 @@ add_test(const std::string& _name, const result (*_function)()) {
 
 
 void
-test::
+unit_tester::
 run() const {
   std::size_t passed = 0;
 
