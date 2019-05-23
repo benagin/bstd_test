@@ -26,3 +26,7 @@ Alternatively, include ```bstd_test/include```. In gcc or equivalent:
 
 Then use (depending on which headers you need):
 * ```#include <bstd_test.hpp>```
+
+## Documentation
+
+See https://benagin.github.io/bstd_test for documentation.
