@@ -28,6 +28,9 @@ INC  := -Iinclude/
 CXX 	  = g++
 CXXFLAGS  = -std=c++2a -Wall -Werror -pedantic
 LDFLAGS   = -shared
+LINK      = -Lbin -L$(HOME)/Projects/bstd_test/bin
+LINK_TEST = $(LINK) -lbstdtest
+
 
 ifeq ($(debug), 1)
 	CXXFLAGS += -g
@@ -56,22 +59,22 @@ LIB  := $(BIN_DIR)/libbstdtest.so
 
 # Executable Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-all:	$(EXAMPLES) $(BSTD_TEST)
+all:	$(BSTD_TEST) $(EXAMPLES)
 
-# Build all examples.
-.PHONY: $(EXAMPLES)
-$(EXAMPLES):	%: %.cpp
-		@echo Compiling $<...
-		@$(CXX) $(CXXFLAGS) $(DEPS) $(INC) $< -o $@
-		@cat $(D_FILES) >> $(DEPENDENCIES)
-
-# build bstd::test library.
+# Build bstd::test library.
 .PHONY: $(BSTD_TEST)
 $(BSTD_TEST):	$(LIB)
 $(LIB):		$(OBJS)
 		@echo Linking $<...
 		@$(CXX) $(LDFLAGS) -o $@ $^
 		@rm -f $(OBJS)
+
+# Build all examples.
+.PHONY: $(EXAMPLES)
+$(EXAMPLES):	%: %.cpp
+		@echo Compiling $<...
+		@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_TEST) $(INC) $< -o $@
+		@cat $(D_FILES) >> $(DEPENDENCIES)
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
