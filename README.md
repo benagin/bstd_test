@@ -8,7 +8,7 @@ A library of C++ testing tools.
 
 1. ```git clone git@github.com:benagin/bstd_test.git```
 2. ```cd bstd_test```
-3. ```make bstd_test``
+3. ```make bstd_test```
 
 ##### Available build targets
 1. Build everything: ```make``` or ```make all```
