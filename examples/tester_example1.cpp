@@ -1,6 +1,6 @@
 #include "tester_example1.hpp"
 
-BSTD_UNIT_TEST_MAIN(tester_example1)
+BSTD_TEST_MAIN(tester_example1)
 
 
 tester_example1::
