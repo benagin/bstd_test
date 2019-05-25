@@ -10,7 +10,7 @@ tester_example1() {
 }
 
 
-const bstd::unit_test::result
+const bstd::test::result
 tester_example1::
 test1() const {
 
@@ -19,15 +19,15 @@ test1() const {
   // This is a very basic example of a test.
   const bool success = m_test_data_string == "test";
 
-  return bstd::unit_test::result(success, "test1 failed");
+  return bstd::test::result(success, "test1 failed");
 }
 
 
-const bstd::unit_test::result
+const bstd::test::result
 tester_example1::
 test2() const {
 
   const bool success = m_test_data_int == 55;
 
-  return bstd::unit_test::result(success, "test2 failed");
+  return bstd::test::result(success, "test2 failed");
 }
