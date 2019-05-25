@@ -6,8 +6,8 @@
 #define BSTD_UNIT_TEST_MAIN(unit_tester) \
   int                                    \
   main() {                               \
-    const test_class test;               \
-    test.run();                          \
+    const unit_tester tester;            \
+    tester.run();                        \
   }
 
 #endif
