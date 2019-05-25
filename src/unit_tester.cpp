@@ -1,7 +1,7 @@
 #include "unit_tester.hpp"
 
 
-namespace bstd::unit_test {
+namespace bstd::test {
 
 
 unit_tester*

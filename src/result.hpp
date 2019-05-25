@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-namespace bstd::unit_test {
+namespace bstd::test {
 
 /// Represents a unit test result.
 /// This contains a boolean representing the test's success

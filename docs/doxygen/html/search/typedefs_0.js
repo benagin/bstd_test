@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['result',['result',['../namespacebstd_1_1unit__test.html#a0591715ac543b56ca980a2608343958e',1,'bstd::unit_test']]]
+  ['result',['result',['../namespacebstd_1_1test.html#a15fe6432e5a257c43858db6f817898ae',1,'bstd::test']]]
 ];

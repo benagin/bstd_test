@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['test1',['test1',['../classtest__example1.html#a7670bf48e7565885e7453393959dfb70',1,'test_example1']]],
-  ['test2',['test2',['../classtest__example1.html#ac63aac8653c0c4709b5ce33280485644',1,'test_example1']]],
-  ['test_5fexample1',['test_example1',['../classtest__example1.html#add0c07c2fa08ac9a7621f661bb462b4c',1,'test_example1']]]
+  ['test1',['test1',['../classtester__example1.html#ac230824bffd69f4598dc78d899b40e46',1,'tester_example1']]],
+  ['test2',['test2',['../classtester__example1.html#a727071d5fefa0311ce132257a7006e1c',1,'tester_example1']]],
+  ['tester_5fexample1',['tester_example1',['../classtester__example1.html#a4b0bb4dbcb6e964b1dd34d8f78a9df24',1,'tester_example1']]]
 ];

@@ -9,7 +9,7 @@
 
 #include "result.hpp"
 
-namespace bstd::unit_test {
+namespace bstd::test {
 
 /// \brief Store and run unit tests
 ///
