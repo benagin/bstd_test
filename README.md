@@ -14,6 +14,7 @@ A library of C++ testing tools.
 1. Build everything: ```make``` or ```make all```
 2. Build bstd_test: ```make bstd_test```
 3. Build examples: ```make examples```
+4. Build and install the library to ```/usr/local/lib```: ```make install``
 
 ### Include public headers
 
