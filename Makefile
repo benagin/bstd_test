@@ -2,10 +2,11 @@
 
 debug ?= 0
 
-# Component names ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Component/target names ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 BSTD_TEST ?= bstd_test
 EXAMPLES  ?= examples
+INSTALL   ?= install
 
 # Directory Layout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -75,6 +76,11 @@ $(EXAMPLES):	%: %.cpp
 		@echo Compiling $<...
 		@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_TEST) $(INC) $< -o $@
 		@cat $(D_FILES) >> $(DEPENDENCIES)
+
+.PHONY: $(INSTALL)
+$(INSTALL):	$(LIB)
+		@echo Installing...
+		@cp $(LIB) /usr/local/lib/
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
