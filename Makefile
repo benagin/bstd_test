@@ -10,6 +10,9 @@ INSTALL   ?= install
 
 # Directory Layout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+# TODO: make this configurable and/or work on other machines.
+INSTALL_DIR ?= /usr/local/lib
+
 $(shell mkdir -p bin)
 BIN_DIR ?= ./bin
 
@@ -56,9 +59,7 @@ LIB  := $(BIN_DIR)/libbstdtest.so
 	@$(CXX) -c $(CXXFLAGS) $(DEPS) $(INC) $< -o $@
 	@cat $(D_FILES) >> $(DEPENDENCIES)
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
-# Executable Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Target Recipes ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 all:	$(BSTD_TEST) $(EXAMPLES)
 
@@ -77,10 +78,11 @@ $(EXAMPLES):	%: %.cpp
 		@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_TEST) $(INC) $< -o $@
 		@cat $(D_FILES) >> $(DEPENDENCIES)
 
+# Install the library to $(INSTALL_DIR).
 .PHONY: $(INSTALL)
 $(INSTALL):	$(LIB)
 		@echo Installing...
-		@cp $(LIB) /usr/local/lib/
+		@cp $(LIB) $(INSTALL_DIR)
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -97,7 +99,7 @@ clean:
 
 # Other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# include automatically generated dependencies
+# Include automatically generated dependencies.
 -include $(DEPENDENCIES)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
