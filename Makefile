@@ -45,8 +45,8 @@ DEPS = -MMD -MF $(D_FILES)
 # File Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 
-EXAMPLES_SRCS := $(shell find $(EXAMPLES_SRC_DIR) -path "*.cpp")
-EXAMPLES      := $(basename $(EXAMPLES_SRCS))
+EXAMPLES_SRCS      := $(shell find $(EXAMPLES_SRC_DIR) -path "*.cpp")
+EXAMPLES_BASENAMES := $(basename $(EXAMPLES_SRCS))
 
 SRCS := $(shell find $(SRC_DIR) -path "*.cpp")
 OBJS := $(SRCS:.cpp=.o)
@@ -67,32 +67,32 @@ all:	$(BSTD_TEST) $(EXAMPLES)
 .PHONY: $(BSTD_TEST)
 $(BSTD_TEST):	$(LIB)
 $(LIB):		$(OBJS)
-		@echo Linking $<...
-		@$(CXX) $(LDFLAGS) -o $@ $^
-		@rm -f $(OBJS)
+	@echo Linking $<...
+	@$(CXX) $(LDFLAGS) -o $@ $^
+	@rm -f $(OBJS)
 
 # Build all examples.
 .PHONY: $(EXAMPLES)
-$(EXAMPLES):	%: %.cpp
-		@echo Compiling $<...
-		@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_TEST) $(INC) $< -o $@
-		@cat $(D_FILES) >> $(DEPENDENCIES)
+$(EXAMPLES):            $(EXAMPLES_BASENAMES)
+$(EXAMPLES_BASENAMES):	%: %.cpp $(LIB)
+	@echo Compiling $<...
+	@$(CXX) $(CXXFLAGS) $(DEPS) $(LINK_TEST) $(INC) $< -o $@
+	@cat $(D_FILES) >> $(DEPENDENCIES)
 
 # Install the library to $(INSTALL_DIR).
 .PHONY: $(INSTALL)
 $(INSTALL):	$(LIB)
-		@echo Installing...
-		@cp $(LIB) $(INSTALL_DIR)
+	@echo Installing...
+	@cp $(LIB) $(INSTALL_DIR)
 
 # Cleanup ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# TODO: clean examples and test
 .PHONY: clean
 clean:
 	@echo Cleaning...
 	@rm -f $(shell find $(DEPENDENCY_DIR) -path "*.d")
 	@rm -f $(shell find . -path "*.o")
-	@rm -f $(EXAMPLES)
+	@rm -f $(EXAMPLES_BASENAMES)
 	@rm -f $(DEPENDENCIES)
 	@rm -rf $(BUILD_DIR)
 	@rm -rf $(BIN_DIR)
