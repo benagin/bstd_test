@@ -1,22 +1,23 @@
-#ifndef BSTD_UNIT_TEST_HPP
-#define BSTD_UNIT_TEST_HPP
+#ifndef BSTD_TEST_UNIT_TESTER_HPP
+#define BSTD_TEST_UNIT_TESTER_HPP
 
 #include <iostream>
 #include <functional>
+#include <map>
+#include <memory>
 #include <string>
 #include <sstream>
-#include <vector>
 
-#include "result.hpp"
+#include "unit_test.hpp"
 
 namespace bstd::test {
 
-/// \brief Store and run unit tests
+/// \brief Store and run unit tests.
 ///
 /// Unit testing tool.
 /// Stores a set of unit test functions.
-/// Provides interface for executing and showing the results of these unit test
-/// functions.
+/// Executes provided unit tests and prints information about the results.
+/// TODO: it might be possible to include this header via macro
 class unit_tester {
 
   public:
@@ -24,20 +25,21 @@ class unit_tester {
     /// Function signature for unit test functions.
     /// Note: Non-member functions are also allowed.
     /// ```
-    /// const bstd::unit_test::result test_class::test_method() const {
+    /// void test_class::test_method() {
     ///   ...
-    ///   Testing code here.
+    ///   Testing code/verifications here.
+    //
+    //    VERIFY(x == y, "x and y values do not match");
+    //    VERIFY(foo() == bar(), "foobar mismatch");
     ///   ...
-    ///
-    ///   return result;
     /// }
     /// ```
-    typedef std::function<const result(const unit_tester&)> test_function;
+    typedef std::function<void(unit_tester&)> test_function;
 
-    /// Default constructor
+    /// \brief Default constructor.
     unit_tester() {}
 
-    /// Default virtual destructor
+    /// \brief Default virtual destructor.
     virtual ~unit_tester() {}
 
     /// \brief Add a test method from a class that derives \ref unit_tester.
@@ -49,46 +51,74 @@ class unit_tester {
     /// \return `this` so the function can be chained
     template <class Derived>
     unit_tester* add_test(const std::string& _name,
-        const result (Derived::*_method)() const);
+        void(Derived::*_method)());
 
     /// \brief Add a test function.
     /// \param _name the name of the test
     /// \param _function a function pointer to the test method
     /// \return `this` so the function can be chained
     unit_tester* add_test(const std::string& _name,
-        const result (*_function)());
+        void(*_function)());
 
     /// Run each function added to this tester and write results to standard
     /// output.
-    virtual void run() const final;
+    virtual void run() final;
+
+  protected:
+
+    unit_test* m_current_test{nullptr};
+
+    const std::string_view m_clear_color {"\x1b[0m"};
+    const std::string_view m_green{"\x1b[32m"};
+    const std::string_view m_red{"\x1b[31m"};
 
   private:
 
-    std::vector<std::pair<std::string, test_function>> m_tests;
+    std::map<std::string, unit_test> m_tests;
+
 };
 
 
 template <class Derived>
 unit_tester*
 unit_tester::
-add_test(const std::string& _name, const result (Derived::*_method)() const) {
+add_test(const std::string& _name, void(Derived::*_method)()) {
   static_assert(std::is_base_of<unit_tester, Derived>::value,
-      "Derived must derive from bstd::unit_tester");
+      "The test class must derive bstd::test::unit_tester");
 
   // Convert to base class method.
   const test_function method =
-      static_cast<const result (unit_tester::*)() const>(_method);
+      static_cast<void(unit_tester::*)()>(_method);
 
-  m_tests.push_back(std::make_pair(_name, method));
+  m_tests.insert(std::make_pair(_name, unit_test(method)));
   return this;
 }
 
 }
 
-/// Create a test by adding it to the tool.
+/// \brief Create a test by adding it to the tool.
 /// This allows the user to call ADD_TEST(test_class::test_method) instead of
 /// add_test("name", &test_class::test_method);
+/// \param name the name of the method prefixed with the class name
+///             (test_class::test_method)
 #define ADD_TEST(name)   \
   add_test(#name, &name) \
+
+/// \brief Verify a boolean expression.
+/// This acts as a small scall test case within a test.
+/// \param expression a boolean expression
+/// \param name the name of the verification (string)
+#define VERIFY(expression, name)                                  \
+  if(expression) {                                                \
+    std::cout << m_green << "\tVerify \'" << name << "\' passed"; \
+    m_current_test->task_pass();                                  \
+  }                                                               \
+  else {                                                          \
+    std::cout << m_red << "\tVerify \'" << name << "\' failed";   \
+    m_current_test->task_fail();                                  \
+  }                                                               \
+  std::cout << m_clear_color << std::endl;                        \
+
+// TODO: add different types of verification.
 
 #endif

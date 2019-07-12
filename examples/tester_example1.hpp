@@ -16,8 +16,11 @@ class tester_example1 final : public bstd::test::unit_tester {
 
     ~tester_example1() {}
 
-    const bstd::test::result test1() const;
-    const bstd::test::result test2() const;
+    /// Unit test methods.
+
+    void test1();
+    void test2();
+    void test3();
 
   private:
 

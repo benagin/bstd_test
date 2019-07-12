@@ -7,27 +7,35 @@ tester_example1::
 tester_example1() {
   ADD_TEST(tester_example1::test1);
   ADD_TEST(tester_example1::test2);
+  ADD_TEST(tester_example1::test2);
 }
 
 
-const bstd::test::result
+void
 tester_example1::
-test1() const {
+test1() {
 
   // Write test here.
 
-  // This is a very basic example of a test.
-  const bool success = m_test_data_string == "test";
-
-  return bstd::test::result(success, "test1 failed");
+  // Basic verification.
+  VERIFY(m_test_data_string == "test", "good verification");
+  VERIFY(m_test_data_string == "wrong", "bad verification");
 }
 
 
-const bstd::test::result
+void
 tester_example1::
-test2() const {
+test2() {
 
-  const bool success = m_test_data_int == 55;
+  VERIFY(m_test_data_int == 55, "good verification");
+  VERIFY(m_test_data_int == 25, "bad verification");
+}
 
-  return bstd::test::result(success, "test2 failed");
+void
+tester_example1::
+test3() {
+
+  const int the_result_of_some_function = rand();
+
+  VERIFY(the_result_of_some_function == 42, "good verification");
 }

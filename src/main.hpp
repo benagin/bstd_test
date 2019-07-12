@@ -4,10 +4,10 @@
 /// This includes a main function which runs the tests in the class provided as
 /// an argument.
 #define BSTD_TEST_MAIN(unit_tester) \
-  int                                    \
-  main() {                               \
-    const unit_tester tester;            \
-    tester.run();                        \
+  int                               \
+  main() {                          \
+    unit_tester tester;             \
+    tester.run();                   \
   }
 
 #endif

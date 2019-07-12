@@ -6,50 +6,42 @@ namespace bstd::test {
 
 unit_tester*
 unit_tester::
-add_test(const std::string& _name, const result (*_function)()) {
-  m_tests.push_back(std::make_pair(_name, std::bind(_function)));
+add_test(const std::string& _name, void(*_function)()) {
+  m_tests.insert(std::make_pair(_name, unit_test(std::bind(_function))));
   return this;
 }
 
 
 void
 unit_tester::
-run() const {
-  std::size_t passed = 0;
+run() {
+  std::size_t tests_passed = 0;
 
-  constexpr std::string_view clear_color {"\x1b[0m"};
-  constexpr std::string_view green{"\x1b[32m"};
-  constexpr std::string_view red{"\x1b[31m"};
+  for(auto& [name, test] : m_tests) {
+    std::cout << name << std::endl;
+    // TODO: is this a memory leak?
+    m_current_test = &test;
+    test.run(*this);
 
-  for(const auto& [name, test] : m_tests) {
-    const auto result = test(*this);
-
-    if(result.first) {
-      ++passed;
-      std::cout << name << " passed" << std::endl;
-    }
-    else {
-      const auto reason = !result.second.empty() ? result.second :
-          "No reason given.";
-      std::cout << red << name << " failed" << clear_color << ": "
-        << reason << std::endl;
-    }
+    if(test.all_tasks_passed())
+      ++tests_passed;
   }
 
   std::stringstream output;
-  const auto& total = m_tests.size();
+  const auto& total_tests = m_tests.size();
 
-  if(passed == total)
-    output << green << "All (" << total << ") tests passed!";
+  if(tests_passed == total_tests)
+    output << m_green << "All (" << total_tests << ") tests passed!";
   else {
-    const double ratio = ((double) passed / (double) total) * 100;
+    const double ratio = ((double) tests_passed/ (double) total_tests) * 100;
     const int percent = ratio;
 
-    output << red;
-    output << percent << "% (" << passed << "/" << total << ") of tests passed.";
+    output << m_red;
+    output << percent << "% (" << tests_passed << "/" << total_tests
+        << ") of tests passed.";
   }
 
-  std::cout << output.str() << clear_color << std::endl;
+  std::cout << std::endl << output.str() << m_clear_color << std::endl;
 }
 
 
