@@ -18,7 +18,7 @@ run() {
   std::size_t tests_passed = 0;
 
   for(auto& [name, test] : m_tests) {
-    std::cout << name << std::endl;
+    m_test_report << name << std::endl;
     // TODO: is this a memory leak?
     m_current_test = &test;
     test.run(*this);
@@ -27,21 +27,20 @@ run() {
       ++tests_passed;
   }
 
-  std::stringstream output;
   const auto& total_tests = m_tests.size();
 
   if(tests_passed == total_tests)
-    output << m_green << "All (" << total_tests << ") tests passed!";
+    m_test_report << m_green << "All (" << total_tests << ") tests passed!";
   else {
     const double ratio = ((double) tests_passed/ (double) total_tests) * 100;
     const int percent = ratio;
 
-    output << m_red;
-    output << percent << "% (" << tests_passed << "/" << total_tests
+    m_test_report << m_red;
+    m_test_report << percent << "% (" << tests_passed << "/" << total_tests
         << ") of tests passed.";
   }
 
-  std::cout << std::endl << output.str() << m_clear_color << std::endl;
+  std::cout << std::endl << m_test_report.str() << m_clear_color << std::endl;
 }
 
 

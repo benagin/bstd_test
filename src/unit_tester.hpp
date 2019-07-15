@@ -68,6 +68,8 @@ class unit_tester {
 
     unit_test* m_current_test{nullptr};
 
+    std::stringstream m_test_report{""};
+
     const std::string_view m_clear_color {"\x1b[0m"};
     const std::string_view m_green{"\x1b[32m"};
     const std::string_view m_red{"\x1b[31m"};
@@ -108,16 +110,16 @@ add_test(const std::string& _name, void(Derived::*_method)()) {
 /// This acts as a small scall test case within a test.
 /// \param expression a boolean expression
 /// \param name the name of the verification (string)
-#define VERIFY(expression, name)                                  \
-  if(expression) {                                                \
-    std::cout << m_green << "\tVerify \'" << name << "\' passed"; \
-    m_current_test->task_pass();                                  \
-  }                                                               \
-  else {                                                          \
-    std::cout << m_red << "\tVerify \'" << name << "\' failed";   \
-    m_current_test->task_fail();                                  \
-  }                                                               \
-  std::cout << m_clear_color << std::endl;                        \
+#define VERIFY(expression, name)                                      \
+  if(expression) {                                                    \
+    m_test_report << m_green << "\tVerify \'" << name << "\' passed"; \
+    m_current_test->task_pass();                                      \
+  }                                                                   \
+  else {                                                              \
+    m_test_report << m_red << "\tVerify \'" << name << "\' failed";   \
+    m_current_test->task_fail();                                      \
+  }                                                                   \
+  m_test_report << m_clear_color << std::endl;                        \
 
 // TODO: add different types of verification.
 
