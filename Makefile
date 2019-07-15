@@ -69,7 +69,6 @@ $(BSTD_TEST):	$(LIB)
 $(LIB):		$(OBJS)
 	@echo Linking $<...
 	@$(CXX) $(LDFLAGS) -o $@ $^
-	@rm -f $(OBJS)
 
 # Build all examples.
 .PHONY: $(EXAMPLES)
