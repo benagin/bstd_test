@@ -4,6 +4,13 @@
 namespace bstd::test {
 
 
+const std::size_t
+unit_test::
+get_total_tasks() const {
+  return m_total;
+}
+
+
 void
 unit_test::
 task_pass() {

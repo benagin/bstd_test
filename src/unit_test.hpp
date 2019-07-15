@@ -24,6 +24,8 @@ class unit_test final {
     /// \brief Default destructor.
     ~unit_test() {}
 
+    const std::size_t get_total_tasks() const;
+
     /// \brief Increment the count for passed and total tasks.
     void task_pass();
 

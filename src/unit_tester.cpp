@@ -23,6 +23,11 @@ run() {
     m_current_test = &test;
     test.run(*this);
 
+    if(test.get_total_tasks() == 0) {
+      m_test_report << m_green<< "\tNo tasks were found in this test"
+          << m_clear_color << std::endl;
+    }
+
     if(test.all_tasks_passed())
       ++tests_passed;
   }
