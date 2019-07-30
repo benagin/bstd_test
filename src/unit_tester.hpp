@@ -111,6 +111,7 @@ add_test(const std::string& _name, void(Derived::*_method)()) {
 /// \param expression a boolean expression
 /// \param name the name of the verification (string)
 #define VERIFY(expression, name)                                      \
+  {                                                                   \
   if(expression) {                                                    \
     m_test_report << m_green << "\tVerify \'" << name << "\' passed"; \
     m_current_test->task_pass();                                      \
@@ -120,6 +121,7 @@ add_test(const std::string& _name, void(Derived::*_method)()) {
     m_current_test->task_fail();                                      \
   }                                                                   \
   m_test_report << m_clear_color << std::endl;                        \
+  }                                                                   \
 
 // TODO: add different types of verification.
 
