@@ -132,7 +132,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="unit__tester_8hpp_source.html#l00104">104</a> of file <a class="el" href="unit__tester_8hpp_source.html">unit_tester.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unit__tester_8hpp_source.html#l00106">106</a> of file <a class="el" href="unit__tester_8hpp_source.html">unit_tester.hpp</a>.</p>
 
 </div>
 </div>
@@ -161,7 +161,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span>(expression) {                                                \</div><div class="line">    std::cout &lt;&lt; m_green &lt;&lt; <span class="stringliteral">&quot;\tVerify \&#39;&quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;\&#39; passed&quot;</span>; \</div><div class="line">    m_current_test-&gt;task_pass();                                  \</div><div class="line">  }                                                               \</div><div class="line">  else {                                                          \</div><div class="line">    std::cout &lt;&lt; m_red &lt;&lt; <span class="stringliteral">&quot;\tVerify \&#39;&quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;\&#39; failed&quot;</span>;   \</div><div class="line">    m_current_test-&gt;task_fail();                                  \</div><div class="line">  }                                                               \</div><div class="line">  std::cout &lt;&lt; m_clear_color &lt;&lt; std::endl;                        \</div></div><!-- fragment -->
+<b>Value:</b><div class="fragment"><div class="line">{                                                                   \</div><div class="line">  if(expression) {                                                    \</div><div class="line">    m_test_report &lt;&lt; m_green &lt;&lt; <span class="stringliteral">&quot;\tVerify \&#39;&quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;\&#39; passed&quot;</span>; \</div><div class="line">    m_current_test-&gt;task_pass();                                      \</div><div class="line">  }                                                                   \</div><div class="line">  else {                                                              \</div><div class="line">    m_test_report &lt;&lt; m_red &lt;&lt; <span class="stringliteral">&quot;\tVerify \&#39;&quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;\&#39; failed&quot;</span>;   \</div><div class="line">    m_current_test-&gt;task_fail();                                      \</div><div class="line">  }                                                                   \</div><div class="line">  m_test_report &lt;&lt; m_clear_color &lt;&lt; std::endl;                        \</div><div class="line">  }                                                                   \</div></div><!-- fragment -->
 <p>Verify a boolean expression. This acts as a small scall test case within a test. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -171,7 +171,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="unit__tester_8hpp_source.html#l00111">111</a> of file <a class="el" href="unit__tester_8hpp_source.html">unit_tester.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unit__tester_8hpp_source.html#l00113">113</a> of file <a class="el" href="unit__tester_8hpp_source.html">unit_tester.hpp</a>.</p>
 
 </div>
 </div>
