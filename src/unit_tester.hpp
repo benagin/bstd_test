@@ -107,7 +107,7 @@ add_test(const std::string& _name, void(Derived::*_method)()) {
   add_test(#name, &name) \
 
 /// \brief Verify a boolean expression.
-/// This acts as a small scall test case within a test.
+/// This acts as a small scale test case within a test.
 /// \param expression a boolean expression
 /// \param name the name of the verification (string)
 #define VERIFY(expression, name)                                      \
